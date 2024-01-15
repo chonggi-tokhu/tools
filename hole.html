@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <svg id="mysvg" viewBox="0 0 800 600" style="background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAyMDAxMDkwNC8vRU4iCiAiaHR0cDovL3d3dy53My5vcmcvVFIvMjAwMS9SRUMtU1ZHLTIwMDEwOTA0L0RURC9zdmcxMC5kdGQiPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgbGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDkwMCI+CiAgICA8Zz4KICAgICAgICA8cGF0aCBkPSJNMCAwIEw4MDAgMCA4MDAgNjAwIDAgNjAwWiIgZmlsbD0iIzAwNUVCOCIgLz4KICAgICAgICA8cGF0aCBkPSJNMCAwIEw1MCAwIDgwMCA1NzAgODAwIDYwMCA3NDAgNjAwIDAgMzBaIiBmaWxsPSIjZmZmIiAvPgogICAgICAgIDxwYXRoIGQ9Ik04MDAgMCBMODAwIDEwIDUwIDYwMCAwIDYwMCAwIDU3MCA3NTAgMFoiIGZpbGw9IiNmZmYiIC8+CiAgICAgICAgPHBhdGggZD0iTTM2MCAwIEwzNjAgNjAwIDQ0MCA2MDAgNDQwIDBaIiBmaWxsPSIjZmZmIiAvPgogICAgICAgIDxwYXRoIGQ9Ik0wIDI2MCA4MDAgMjYwIDgwMCAzNDAgMCAzNDBaIiBmaWxsPSIjZmZmIiAvPgogICAgICAgIDxwYXRoIGQ9Ik0wIDAgTDAgMjAgMzIwIDI2MCAzNDAgMjYwWiIgZmlsbD0iI0M3MDQyQyIgLz4KICAgICAgICA8cGF0aCBkPSJNODAwIDAgTDc4MCAwIDQ0MCAyNjAgNDYwIDI2MFoiIGZpbGw9IiNDNzA0MkMiIC8+CiAgICAgICAgPHBhdGggZD0iTTAgNjAwIEwyMCA2MDAgMzYwIDM0MCAzNDAgMzQwWiIgZmlsbD0iI0M3MDQyQyIgLz4KICAgICAgICA8cGF0aCBkPSJNODAwIDYwMCBMODAwIDU4MCA0ODAgMzQwIDQ2MCAzNDBaIiBmaWxsPSIjQzcwNDJDIiAvPgogICAgICAgIDxwYXRoIGQ9Ik0zODAgMCBMMzgwIDYwMCA0MjAgNjAwIDQyMCAwWiIgZmlsbD0iI0NFMTEyNCIgLz4KICAgICAgICA8cGF0aCBkPSJNMCAyODAgTDgwMCAyODAgODAwIDMyMCAwIDMyMFoiIGZpbGw9IiNDRTExMjQiIC8+CiAgICA8L2c+Cjwvc3ZnPg==)" width="800" height="600">
+        <defs>
+            <mask id="hole">
+                <rect width="100%" height="100%" fill="#fff" />
+                <g id="my_mask">
+                    <circle id="c" r="50" cx="100" cy="100" />
+                </g>
+            </mask>
+            <radialGradient id="myradialgrad1">
+                <stop style="stop-color:transparent;" offset="0.8"></stop>
+                <stop style="stop-color:#555;stop-opacity:1;" offset="1"></stop>
+            </radialGradient>
+        </defs>
+        <rect fill="#0000ff" width="100%" height="100%" mask="url(#hole)" />
+        <use id="theUse" xlink:href="#c" fill="url(#myradialgrad1)" pointer-events="all" />
+    </svg>
+    <script>
+
+        var m, dx, dy;
+        var v1 = false;
+        var touchtimes = -1;
+        function oMousePosSVG(e) {
+                var p = document.getElementById("mysvg").createSVGPoint();
+                p.x = e.clientX;
+                p.y = e.clientY;
+                var ctm = document.getElementById("mysvg").getScreenCTM().inverse();
+                var p = p.matrixTransform(ctm);
+                return p;
+            }
+        document.getElementById("theUse").onmousedown = function(e){
+            m = oMousePosSVG(e);
+            dx = Number(document.getElementById("c").getAttribute("cx")) - m.x;
+            dy = Number(document.getElementById("c").getAttribute("cy")) - m.y;
+            v1 = true;
+        }
+        document.getElementById("mysvg").onmouseup = function(e){
+            v1 = false;
+        }
+        document.getElementById("mysvg").onmousemove = function(e){
+            if (v1 == true) {
+                m = oMousePosSVG(e);
+                document.getElementById("c").setAttributeNS(null, `cx`, e.offsetX);
+                document.getElementById("c").setAttributeNS(null, `cy`, e.offsetY);
+            }
+        }
+        document.getElementById("theUse").ontouchstart = function(e){
+            touchtimes+=1;
+            m = oMousePosSVG(e);
+            dx = Number(document.getElementById("c").getAttribute("cx")) - m.x;
+            dy = Number(document.getElementById("c").getAttribute("cy")) - m.y;
+            v1 = true;
+            if (v1 == true) {
+                m = oMousePosSVG(e.touches[e.touches.length - 1]);
+                document.getElementById("c").setAttributeNS(null, `cx`, e.touches[e.touches.length - 1].clientX);
+                document.getElementById("c").setAttributeNS(null, `cy`, e.touches[e.touches.length - 1].clientY);
+            }
+        }
+        document.getElementById("theUse").ontouchcancel = function(e){
+            v1 = false;
+        }
+        function touchmoving(e){
+            if (v1 == true) {
+                        m = oMousePosSVG(e.touches[e.touches.length - 1]);
+                        document.getElementById("c").setAttributeNS(null, `cx`, e.touches[e.touches.length - 1].clientX);
+                        document.getElementById("c").setAttributeNS(null, `cy`, e.touches[e.touches.length - 1].clientY);
+                    }
+        }
+        document.getElementById("mysvg").ontouchmove = function(e){
+            if (v1 == true) {
+                m = oMousePosSVG(e.touches[e.touches.length - 1]);
+                document.getElementById("c").setAttributeNS(null, `cx`, e.touches[e.touches.length - 1].clientX);
+                document.getElementById("c").setAttributeNS(null, `cy`, e.touches[e.touches.length - 1].clientY);
+            }
+        }
+        document.getElementById("theUse").ontouchmove = function (e) {
+                if (v1 == true) {
+                    m = oMousePosSVG(e.touches[e.touches.length - 1]);
+                    document.getElementById("c").setAttributeNS(null, `cx`, e.touches[e.touches.length - 1].clientX);
+                    document.getElementById("c").setAttributeNS(null, `cy`, e.touches[e.touches.length - 1].clientY);
+                }
+            }
+        document.getElementById("mysvg").onwheel = function(e){
+            if (Number(document.getElementById("c").getAttribute("r")) + e.deltaY/5 >=0) {
+
+            
+                document.getElementById("c").setAttribute("r",Number(document.getElementById("c").getAttribute("r"))+ e.deltaY/5);
+            }
+        }
+    </script>
+</body>
+</html>

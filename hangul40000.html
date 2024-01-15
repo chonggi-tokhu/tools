@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hangul40000</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <style>
+        #outp{
+            width: 80vmin;
+            height: 400px;
+            overflow: scroll;
+        }
+        .main {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="header">
+            <header>
+                <br>
+                <h2>이곳은 한글 모든 문자를 랜덤으로 정해진만큼 출력해서 복사할수 있는 곳입니다.</h2>
+                <h1>복사시 데이터 요금 책임 안집니다. 주의하세요.</h1>
+            </header>
+        </div>
+        <div class="main">
+            <div id="outp"></div>
+            <div style="display: block;">
+            <div class="btn-group">
+                <button type="button" class="btn btn-info" onclick="currentncharacters=(!numbersxxx || numbersxxx == 'NaN' || !Number(numbersxxx))?kuromandwae():Number(numbersxxx);numbersxxx=currentncharacters;mycopyfunction(document.getElementById('outp'),false);" style="margin-right: 0.5px;">COPY <span class="numberofcharacters">6000</span> hangul characters</button>
+                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                    aria-expanded="false" style="margin-left: 0.5px;">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(400);currentncharacters=400;">show new random hangul string(400 characters)</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(1000);currentncharacters=1000;">show new random hangul string(1000 characters)</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(6000);currentncharacters=6000;">show new random hangul string(6000 characters)</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(40000);currentncharacters=40000;">show new random hangul string(40000 characters)</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(100000);currentncharacters=100000;">show new random hangul string(100000 characters)</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a href="#" class="btn btn-danger">Warning:Work bellow can SPEND ENORMOUS DATA</a></li>
+                    <li><a class="dropdown-item btn btn-danger" href="#" onclick="document.getElementById('outp').innerHTML=randomhangul(250000);currentncharacters=250000">show new random hangul string(250000 characters)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><input type="text" placeholder="숫자만 입력하세요" id="numberinp" class="dropdown-item" onkeyup="numbersxxx = Number(document.getElementById('numberinp').value);  document.getElementById('outp').innerHTML=randomhangul(numbersxxx);currentncharacters=numbersxxx"></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        var numbersxxx=6000;
+        var ka = 0xac00;
+        var hih= 0xd7a3;
+        var number0=hih-ka + 1;
+        function randomnumber(p1,p2){
+            return Math.floor(Math.random() * (p2-p1+1)) + p1;
+        }
+        function randomhangul(numbers){
+            var rtv = '';
+            for(var i = 0;i<numbers;i++){
+                rtv+=String.fromCharCode(randomnumber(ka,hih));
+            }
+            return rtv;
+        }
+        
+            async function mycopyfunction(txttocopyel, ishttps) {
+                var el = document.createElement("div");
+                el.innerHTML = txttocopyel.innerHTML;
+                var abc = document.body.appendChild(el);
+                abc.style.position = "absolute";
+                abc.style.left = "-999999px";
+                if (document.body.createTextRange) {
+                    var range = document.body.createTextRange();
+                    range.moveToElementText(abc);
+                    range.select();
+                    if (ishttps) {
+                        await navigator.clipboard.writeText(range);
+                    } else {
+                        try {
+                            document.execCommand('copy')
+                        } catch (error) {
+                            console.error(error);
+                        } finally {
+                            abc.remove();
+                        }
+                    }
+                } else if (window.getSelection) {
+                    var selection = window.getSelection();
+                    var range = document.createRange();
+                    range.selectNodeContents(abc);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    if (ishttps) {
+                        await navigator.clipboard.writeText(range);
+                    } else {
+                        try {
+                            document.execCommand('copy')
+                        } catch (error) {
+                            console.error(error);
+                        } finally {
+                            confirm("다음과 같은 텍스트가 복사됨: " + abc.innerText);
+                            abc.remove();
+                        }
+                    }
+                } else {
+                    confirm("이 웹브라우저는 무식하게 매우매우 낡아서 텍스트 선택기능을 지원하지 않습니다.");
+                }
+                // Get the text field
+
+
+                // Alert the copied text
+
+            }
+            var currentncharacters = 6000;
+            document.getElementsByClassName("main")[0].getElementsByClassName("btn-group")[0].addEventListener("click",function(e){
+                document.getElementsByClassName("numberofcharacters")[0].innerHTML = currentncharacters;
+                numbersxxx = currentncharacters;
+            });
+            
+            document.getElementsByClassName("main")[0].getElementsByClassName("btn-group")[0].addEventListener("keyup",function(e){
+                document.getElementsByClassName("numberofcharacters")[0].innerHTML = currentncharacters;
+                if (document.getElementsByClassName("numberofcharacters")[0].innerHTML=="NaN"){
+                    document.getElementsByClassName("numberofcharacters")[0].innerHTML="";
+                }
+                if (!numbersxxx) { document.getElementById('outp').innerHTML = `숫자만 입력하세요` }
+                numbersxxx = currentncharacters;
+            });
+            window.onload = function(){
+                document.getElementById('outp').innerHTML = randomhangul(6000); currentncharacters = 6000;
+            };
+            var kuromandwae= function () { confirm('숫자만 입력하세요. 수를 입력하지 않을시 6000으로 기본설정됩니다.'); document.getElementById('outp').innerHTML = randomhangul(6000);return 6000;};
+    </script>
+</body>
+</html>
