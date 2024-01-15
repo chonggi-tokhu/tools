@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <title>스압유도기</title>
+    <style>
+        .body {
+            width: 100vmin;
+        }
+
+        #output {
+            display: block;
+            width: 80vmin;
+            height: 400px;
+            overflow: scroll;
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="body">
+        <div class="input-group">
+            <select id="lang" class="form-select form-select-lg mb-3">
+                <option value="eng">52 latin letters</option>
+                <option value="numb">10 arabian numbers</option>
+                <option value="engnumb" selected>52 latin letters+10 arabian numbers</option>
+                <option value="kor">modern han'gŭl chamo</option>
+                <option value="all">10 numbers +52 latin letters + some extended letters and some letters with
+                    diacritics</option>
+            </select>
+            <input type="number" id="len" placeholder="length" value="10000">
+            <div class="btn-group">
+                <div class="btn btn-primary" onclick="makeoutput();">
+                    get random characters as length you set!!!
+                </div>
+                <div class="btn btn-primary">copy!!!</div>
+            </div>
+        </div>
+        <div id="output"></div>
+    </div>
+    <script>
+        var chartype = function () { return document.getElementById("lang").value };
+        var charlength = function () { return parseInt(document.getElementById("len").value) };
+        var chartypes = {
+            eng: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a },],
+            kor: [{
+                from: 0xac00,
+                to: 0xd7a3,
+            }],
+            engnumb: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a }, { from: 0x0030, to: 0x0039 },],
+            numb: [{ from: 0x0030, to: 0x0039 }],
+            all: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a }, { from: 0x0030, to: 0x0039 }, { from: 0x0180, to: 0x024f }, {
+                from: 0x0100,
+                to: 0x017f
+            }],
+        };
+        function randomnumber(p1, p2) {
+            return Math.floor(Math.random() * (p2 - p1 + 1)) + p1;
+        }
+        function getrandomchars(chars, length) {
+            var rtv = '';
+            var charsarr = [];
+            if (Array.isArray(chars) && typeof length == 'number' && !isNaN(length)) {
+                chars.forEach(function (val, idx, arr) {
+                    for (var i1 = val.from; i1 < val.to + 1; i1++) {
+                        charsarr.push(i1);
+                    }
+                });
+                for (var i = 0; i < length; i++) {
+                    rtv += String.fromCharCode(charsarr[randomnumber(0, charsarr.length - 1)]);
+                }
+                return rtv;
+            } else {
+                return '';
+            }
+        }
+        function makeoutput() {
+            document.getElementById("output").innerHTML = getrandomchars(chartypes[chartype()], charlength());
+            return document.getElementById("output").innerHTML;
+        }
+
+        async function mycopyfunction(txttocopyel, ishttps) {
+            var el = document.createElement("div");
+            el.innerHTML = txttocopyel.innerHTML;
+            var abc = document.body.appendChild(el);
+            abc.style.position = "absolute";
+            abc.style.left = "-999999px";
+            if (document.body.createTextRange) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(abc);
+                range.select();
+                if (ishttps) {
+                    await navigator.clipboard.writeText(range);
+                } else {
+                    try {
+                        document.execCommand('copy')
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        abc.remove();
+                    }
+                }
+            } else if (window.getSelection) {
+                var selection = window.getSelection();
+                var range = document.createRange();
+                range.selectNodeContents(abc);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                if (ishttps) {
+                    await navigator.clipboard.writeText(range);
+                } else {
+                    try {
+                        document.execCommand('copy')
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        confirm("다음과 같은 텍스트가 복사됨: " + abc.innerText);
+                        abc.remove();
+                    }
+                }
+            } else {
+                confirm("이 웹브라우저는 무식하게 매우매우 낡아서 텍스트 선택기능을 지원하지 않습니다.");
+            }
+            // Get the text field
+
+
+            // Alert the copied text
+
+        }
+        window.addEventListener("load", function (ev) {
+            makeoutput();
+        });
+    </script>
+</body>
+
+</html>

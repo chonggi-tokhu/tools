@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hangul40000</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <style>
+        #outp {
+            width: 80vmin;
+            height: 400px;
+            overflow: scroll;
+            word-break: break-all;
+        }
+
+        .main {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="header">
+            <header>
+                <br>
+                <h2>이곳은 여러 언어의 문자들을 랜덤으로 정해진만큼 출력해서 복사할수 있는 곳입니다.</h2>
+                <h1>복사시 데이터 요금 책임 안집니다. 주의하세요.</h1>
+            </header>
+        </div>
+        <div class="main">
+            <div style="display: block;">
+
+                <div class="btn-group">
+                    <select id="lang" class="form-select form-select-lg mb-3">
+                        <option value="eng">52 latin letters</option>
+                        <option value="numb">10 arabian numbers</option>
+                        <option value="engnumb" selected>52 latin letters+10 arabian numbers</option>
+                        <option value="kor">modern han'gŭl chamo</option>
+                        <option value="all">10 numbers +52 latin letters + some extended letters and some letters with
+                            diacritics</option>
+                    </select>
+                    <button type="button" class="btn btn-info"
+                        onclick="currentncharacters=(!numbersxxx || numbersxxx == 'NaN' || !Number(numbersxxx))?kuromandwae():Number(numbersxxx);numbersxxx=currentncharacters;mycopyfunction(document.getElementById('outp'),false);"
+                        style="margin-right: 0.5px;">COPY <span class="numberofcharacters">6000</span>
+                        characters</button>
+                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"
+                        data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 0.5px;">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="currentncharacters=400;makeoutput();">show
+                                new random string(400 characters)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="currentncharacters=1000;makeoutput();">show
+                                new random string(1000 characters)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="currentncharacters=6000;makeoutput();">show
+                                new random string(6000 characters)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="currentncharacters=40000;makeoutput();">show
+                                new random string(40000 characters)</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="currentncharacters=100000;makeoutput();">show
+                                new random string(100000 characters)</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a href="#" class="btn btn-danger">Warning:Work bellow can SPEND ENORMOUS DATA</a></li>
+                        <li><a class="dropdown-item btn btn-danger" href="#"
+                                onclick="currentncharacters=250000;makeoutput()">show
+                                new random string(250000 characters)</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><input type="text" placeholder="숫자만 입력하세요" id="numberinp" class="dropdown-item"
+                                onkeyup="numbersxxx = Number(document.getElementById('numberinp').value); makeoutput(numbersxxx);currentncharacters=numbersxxx">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+        </div>
+
+        <div id="outp"></div>
+    </div>
+    <script>
+        var chartype = function () { return document.getElementById("lang").value };
+        var charlength = function () { return currentncharacters; };
+        function randomnumber(p1, p2) {
+            return Math.floor(Math.random() * (p2 - p1 + 1)) + p1;
+        }
+        function makeoutput() {
+            document.getElementById("outp").innerHTML = getrandomchars(chartypes[chartype()], charlength());
+            return document.getElementById("outp").innerHTML;
+        }
+
+        var chartypes = {
+            eng: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a },],
+            kor: [{
+                from: 0xac00,
+                to: 0xd7a3,
+            }],
+            engnumb: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a }, { from: 0x0030, to: 0x0039 },],
+            numb: [{ from: 0x0030, to: 0x0039 }],
+            all: [{ from: 0x0041, to: 0x005a }, { from: 0x0061, to: 0x007a }, { from: 0x0030, to: 0x0039 }, { from: 0x0180, to: 0x024f }, {
+                from: 0x0100,
+                to: 0x017f
+            }],
+        };
+        function getrandomchars(chars, length) {
+            var rtv = '';
+            var charsarr = [];
+            if (Array.isArray(chars) && typeof length == 'number' && !isNaN(length)) {
+                chars.forEach(function (val, idx, arr) {
+                    for (var i1 = val.from; i1 < val.to + 1; i1++) {
+                        charsarr.push(i1);
+                    }
+                });
+                for (var i = 0; i < length; i++) {
+                    rtv += String.fromCharCode(charsarr[randomnumber(0, charsarr.length - 1)]);
+                }
+                return rtv;
+            } else {
+                return '';
+            }
+        }
+        async function mycopyfunction(txttocopyel, ishttps) {
+            var el = document.createElement("div");
+            el.innerHTML = txttocopyel.innerHTML;
+            var abc = document.body.appendChild(el);
+            abc.style.position = "absolute";
+            abc.style.left = "-999999px";
+            if (document.body.createTextRange) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(abc);
+                range.select();
+                if (ishttps) {
+                    await navigator.clipboard.writeText(range);
+                } else {
+                    try {
+                        document.execCommand('copy')
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        abc.remove();
+                    }
+                }
+            } else if (window.getSelection) {
+                var selection = window.getSelection();
+                var range = document.createRange();
+                range.selectNodeContents(abc);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                if (ishttps) {
+                    await navigator.clipboard.writeText(range);
+                } else {
+                    try {
+                        document.execCommand('copy')
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        confirm("다음과 같은 텍스트가 복사됨: " + abc.innerText);
+                        abc.remove();
+                    }
+                }
+            } else {
+                confirm("이 웹브라우저는 무식하게 매우매우 낡아서 텍스트 선택기능을 지원하지 않습니다.");
+            }
+            // Get the text field
+
+
+            // Alert the copied text
+
+        }
+        var currentncharacters = 6000;
+        document.getElementsByClassName("main")[0].getElementsByClassName("btn-group")[0].addEventListener("click", function (e) {
+            document.getElementsByClassName("numberofcharacters")[0].innerHTML = currentncharacters;
+            numbersxxx = currentncharacters;
+        });
+
+        document.getElementsByClassName("main")[0].getElementsByClassName("btn-group")[0].addEventListener("keyup", function (e) {
+            document.getElementsByClassName("numberofcharacters")[0].innerHTML = currentncharacters;
+            if (document.getElementsByClassName("numberofcharacters")[0].innerHTML == "NaN") {
+                document.getElementsByClassName("numberofcharacters")[0].innerHTML = "";
+            }
+            if (!numbersxxx) { document.getElementById('outp').innerHTML = `숫자만 입력하세요` }
+            numbersxxx = currentncharacters;
+        });
+        window.addEventListener("DOMContentLoaded", function () {
+            makeoutput(chartypes[chartype()], 6000); currentncharacters = 6000;
+        });
+
+        window.addEventListener("change", function () {
+            makeoutput(chartypes[chartype()], 6000); currentncharacters = 6000;
+        });
+        var kuromandwae = function () { confirm('숫자만 입력하세요. 수를 입력하지 않을시 6000으로 기본설정됩니다.'); document.getElementById('outp').innerHTML = makeoutput(6000); return 6000; };
+    </script>
+</body>
+
+</html>
