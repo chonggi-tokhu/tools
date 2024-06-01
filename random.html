@@ -81,12 +81,12 @@
           var thisword = worddata[randomnumber(0,worddata.length-1)];
           if (thisword.startsWith('(옵션)')){
             if (option){
-              thisword=thisword.replace('옵션','');
+              thisword=thisword.replace('(옵션)','');
             } else {
               thisowrd=worddata2[randomnumber(0,worddata2.length-1)];
             }
           }
-          rtv+=worddata[randomnumber(0,worddata.length-1)];
+          rtv+=worddata[randomnumber(0,worddata.length-1)]+' ';
         }
         if (!spacechar){
           rtv=rtv.replaceAll(' ','');
