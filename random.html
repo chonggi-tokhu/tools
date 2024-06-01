@@ -83,12 +83,11 @@
               console.log(thisword.replace('(옵션)',''));
             if (option){
               thisword=thisword.replace('(옵션)','');
-          rtv+=thisword+' ';
             } else {
               thisword=worddata2[randomnumber(0,worddata2.length-1)];
-          rtv+=thisword+' ';
             }
           }
+          rtv+=thisword+' ';
         }
         if (!spacechar){
           rtv=rtv.replaceAll(' ','');
