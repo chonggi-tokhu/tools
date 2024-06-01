@@ -80,6 +80,7 @@
         for (var i = 0;i<numbers;i++){
           var thisword = worddata[randomnumber(0,worddata.length-1)];
           if (thisword.startsWith('(옵션)')){
+              console.log(thisword);
             if (option){
               thisword=thisword.replace('(옵션)','');
             } else {
@@ -88,7 +89,7 @@
           }
           rtv+=thisword+' ';
         }
-        if (spacechar){
+        if (!spacechar){
           rtv=rtv.replaceAll(' ','');
         }
         return rtv;
