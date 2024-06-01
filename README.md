@@ -7,3 +7,4 @@
 ### [시계](https://codepen.io/chonggi-tokhu/pen/wvYWRZb)
 ### [색상 선택기](https://chonggi-tokhu.github.io/_Colour_Picker/)
 ### [스크롤압박 유도 글자 복붙(랜덤한글과 비슷함)](./scroll.html)
+### [랜덤단어](./random.html)
