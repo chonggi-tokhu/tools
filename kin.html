@@ -205,13 +205,19 @@
             </div>
             <button onclick="mycopyfunction('__uisayangban',false);" class="btn btn-primary">텍스트를 복사하기</button>
             </div>
+            
+            <div>
+                <h3>야인시대 의사양반</h3>
+                <div id="__space"></div>
+            <button onclick="mycopyfunction('__space',false);" class="btn btn-primary">텍스트를 복사하기</button>
+            </div>
         </div>
 
     </div>
     <script>
         async function mycopyfunction(txttocopyel,ishttps) {
             var el = document.createElement("div");
-            el.innerHTML = document.getElementById(txttocopyel).innerHTML;
+            el.innerHTML =txttocopyel==='__space'? '\u{ffffff}' : document.getElementById(txttocopyel).innerHTML;
             var abc = document.body.appendChild(el);
             abc.style.position ="absolute";
             abc.style.left = "-999999px";
