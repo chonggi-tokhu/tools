@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>유니코드를 입력</title>
+<script src="https://chonggi-tokhu.github.io/files/kin_choice/new/ColourgreyShorterCSSJS-0.0.0.js"></script>
+<script src="https://chonggi-tokhu.github.io/files/kin_choice/new/decs.js"></script>
+<link rel="stylesheet" href="https://chonggi-tokhu.github.io/files/kin_choice/new/ColourgreyShorter.css">
+</head>
+<body>
+<div class="input-group"><input type="text" data-inputnumb-base="16" id="hexinput"><input type="text" id="preview" maxlength="1" onchange="this.parentElement.querySelector('#hexinput').value=this.value.charCodeAt(0);">
+<button id="getCharfromCode">유니코드 복사</button><label><input type="checkbox" onchange="usingExecCommand=this.checked;">document.execCommand 함수를 사용하여 복사하기</label></div>
+<script>
+var usingExecCommand = false;
+function setEl_Attr(el, attrname, attrval){
+if (el instanceof HTMLElement || window["ColourgreyShorterJS"]?.checkHTMLElement(el)){
+el.setAttribute(attrname, attrval);
+el[attrname] = attrval;
+}
+}
+var myInputs = [];
+var myInput = null;
+var copyBtn = document.getElementById("getCharfromCode");
+for (var i = 2;i <= 36;i++){
+var input_numbs_with_this_base = document.getEl_Attr("data-inputnumb-base", i.toString());
+Array.from(input_numbs_with_this_base).forEach((el,idx,par)=>{
+setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, 16, 10));
+el.addEventListener("change", (ev)=>{ setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, 16, 10)); var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10);  document.getElementById("preview").value=char; });
+myInputs.push(el);
+});
+}
+myInput = myInputs[0];
+function getUnicodeChar(code, base){
+return String.fromCharCode(parseInt(CGRConvertDec.converter.convert(code, base, 10)));
+}
+function getIfProtocolIsHttps(){
+return new URL(location.href).protocol==="https:";
+}
+function copyElInner(el, ishttps, cbfunc){
+if (!ColourgreyShorterJS.checkHTMLElement(el)){
+return;
+}
+var range = document.body.createTextRange();
+range.moveToElementText(el);
+range.select();
+
+if (ishttps){
+navigator.clipboard.writeText(range).then((data)=>{ alert("복사함: "+el.innerText); if(typeof cbfunc==="function") { cbfunc(el, true); }; return data; }).catch((whyerr)=>{ alert("failed to copy");if(typeof cbfunc==="function") { cbfunc(el, false); }; return whyerr; }).finally((data)=>{ alert("복사 시도됨"); });
+} else {
+var succeeded = document.execCommand("copy");
+if (!succeeded){
+alert("failed to copy");
+} else {
+alert("복사함: "+el.innerText);
+}
+if (typeof cbfunc === "function") {
+cbfunc(el, succeeded);
+}
+}
+}
+copyBtn.addEventListener("click", (ev)=>{ var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10); var newEl_pr = document.createElement("div"); var newEl = document.body.appendChild(newEl_pr); newEl.innerText = char; copyElInner(newEl, (elparam, getIfProtocolIsHTTPS() && usingExecCommand, succeeded)=>{ if (succeeded){ el?.remove(); } }); });
+
+</script>
+</body>
+</html>
