@@ -33,7 +33,7 @@ myInput = myInputs[0];
 function getUnicodeChar(code, base){
 return String.fromCharCode(parseInt(CGRConvertDec.converter.convert(code, base, 10)));
 }
-function getIfProtocolIsHttps(){
+function getIfProtocolIsHTTPS(){
 return new URL(location.href).protocol==="https:";
 }
 function copyElInner(el, ishttps, cbfunc){
