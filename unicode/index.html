@@ -58,7 +58,7 @@ cbfunc(el, succeeded);
 }
 }
 }
-copyBtn.addEventListener("click", (ev)=>{ var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10); var newEl_pr = document.createElement("div"); var newEl = document.body.appendChild(newEl_pr); newEl.innerText = char; copyElInner(newEl, (elparam, getIfProtocolIsHTTPS() && usingExecCommand, succeeded)=>{ if (succeeded){ el?.remove(); } }); });
+copyBtn.addEventListener("click", (ev)=>{ var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10); var newEl_pr = document.createElement("div"); var newEl = document.body.appendChild(newEl_pr); newEl.innerText = char; copyElInner(newEl, getIfProtocolIsHTTPS() && usingExecCommand, (elparam, succeeded)=>{ if (succeeded){ el?.remove(); } }); });
 
 </script>
 </body>
