@@ -40,10 +40,20 @@ function copyElInner(el, ishttps, cbfunc){
 if (!ColourgreyShorterJS.checkHTMLElement(el)){
 return;
 }
-var range = document.body.createTextRange();
+var range = null;
+if (typeof document.body.createTextRange === "function"){
+  range = document.body.createTextRange();
 range.moveToElementText(el);
 range.select();
-
+} else if (typeof window.getSelection==="function"){
+  
+                var selection = window.getSelection();
+                range = document.createRange();
+                range.selectNodeContents(el);
+                selection.removeAllRanges();
+                selection.addRange(range);
+}
+if (range !== null){
 if (ishttps){
 navigator.clipboard.writeText(range).then((data)=>{ alert("복사함: "+el.innerText); if(typeof cbfunc==="function") { cbfunc(el, true); }; return data; }).catch((whyerr)=>{ alert("failed to copy");if(typeof cbfunc==="function") { cbfunc(el, false); }; return whyerr; }).finally((data)=>{ alert("복사 시도됨"); });
 } else {
@@ -55,6 +65,7 @@ alert("복사함: "+el.innerText);
 }
 if (typeof cbfunc === "function") {
 cbfunc(el, succeeded);
+}
 }
 }
 }
