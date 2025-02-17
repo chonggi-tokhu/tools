@@ -91,11 +91,11 @@
         }
         function makeoutput() {
             document.getElementById("outp").innerHTML = getrandomchars(chartype()!=='all'?chartypes[chartype()]:((param)=>{ 
-                var numbs = parseInt(prompt('전체 중 0~9 숫자 비율')); 
-                var caps = parseInt(prompt('전체 중 A~Z 기본26 대문자 비율')); 
-                var smalls = parseInt(prompt('전체 중 a~z 기본26 소문자 비율')); 
-                var ext_a_s = parseInt(prompt('전체 중 latin extended-a 비율')); 
-                var ext_b_s = parseInt(prompt('전체 중 latin extended-b 비율')); 
+                var numbs = parseInt(prompt('전체 중 0~9 숫자 비율','1')); 
+                var caps = parseInt(prompt('전체 중 A~Z 기본26 대문자 비율','1')); 
+                var smalls = parseInt(prompt('전체 중 a~z 기본26 소문자 비율','1')); 
+                var ext_a_s = parseInt(prompt('전체 중 latin extended-a 비율','1')); 
+                var ext_b_s = parseInt(prompt('전체 중 latin extended-b 비율','1')); 
                 var numbs_ratio_int = !isNaN(numbs)?numbs:1, caps_ratio_int = !isNaN(caps)?caps:1, smalls_ratio_int = !isNaN(smalls)?smalls:1, ext_a_s_ratio_int = !isNaN(ext_a_s)?ext_a_s:1, ext_b_s_ratio_int = !isNaN(ext_b_s)?ext_b_s:1;
                 var types_list = ["caps","smalls","numbs","exta_s","extb_s"];
                 var types_ratio = {"caps":caps_ratio_int,"smalls":smalls_ratio_int,"numbs":numbs_ratio_int,"exta_s":ext_a_s_ratio_int,"extb_s":ext_b_s_ratio_int };
