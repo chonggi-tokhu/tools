@@ -71,7 +71,8 @@
         <p class="input_0 input-el" style="cursor:text;" contenteditable="true">
             나는 중국인 아님
         </p>
-        <button onclick="testingfunc();">변환!</button>
+        <button onclick="testingfunc();">암호화</button>
+        <button onclick="testingfunc_reversed()">복호화</button>
         <p class="output_0">
             <span></span>
         </p>
@@ -91,6 +92,17 @@
             });
             encoded = encryption.encode(document.querySelector('#testing>p.input_0').innerText);
             decoded = encryption.decode(encoded);
+            document.querySelector('#testing>p.output_0>span').innerHTML = `${encoded} <br> 원본: ${decoded}`;
+        }
+        var testingfunc_reversed = () => {
+            var secretlettersize = Number(document.getElementById("secretlettersize").value);
+            encryption.modifyConfig({
+                charMap: document.getElementById("secretletters").value.split(",").map((val, idx, arr) => {
+                    return val.substring(0, secretlettersize);
+                }), charsForOneUnicode: secretlettersize, chunkSize: Number(document.getElementById("secretsize").value),
+            });
+            decoded = encryption.decode(document.querySelector('#testing>p.input_0').innerText);
+            encoded = encryption.encode(decoded);
             document.querySelector('#testing>p.output_0>span').innerHTML = `${encoded} <br> 원본: ${decoded}`;
         }
         var code_func = (code, { secret_letter_size, secret_letters, secret_size } = { secret_size: 6, secret_letters: '가나,다라,마바,사아,자차,카타,파하,__', secret_letter_size: 2 }) => {
