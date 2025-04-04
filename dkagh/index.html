@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Symbols:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Symbols:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Symbols+2&family=Noto+Sans+Symbols:wght@100..900&display=swap"
+        rel="stylesheet">
+    <script src="./encryption.js">
+    </script>
+    <style>
+        .noto-sans-symbols-regular {
+            font-family: "Noto Sans Symbols", serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+
+
+        }
+
+        .noto-sans-symbols-2-regular {
+            font-family: "Noto Sans Symbols 2", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .input-el {
+            border: 1px solid #000000;
+            min-height: 1.8em;
+            min-width: 12rem;
+        }
+    </style>
+</head>
+
+<body>
+    ♟🩑♛♝🩓🩒♟♛♚♝🩓♞♟♚♝♚♝🩓♟🩑🩓🩑♛♟♟🩑♛♛🩒🩓
+    <p class="noto-sans-symbols-regular">
+        ♟🩑♛♝🩓🩒♟♛♚♝🩓♞♟♚♝♚♝🩓♟🩑🩓🩑♛♟♟🩑♛♛🩒🩓
+    </p>
+    <p class="noto-sans-symbols-2-regular input-el" contenteditable="true" id="input">
+        안녕하세요
+    </p>
+    <button
+        onclick="document.getElementById('output').innerHTML=encodeChessCode(document.getElementById('input').innerText);">ENCODE</button>
+    <button
+        onclick="document.getElementById('output').innerHTML=decodeChessCode(document.getElementById('input').innerText);">DECODE</button>
+    <p class="noto-sans-symbols-2-regular" id="output">
+        <!--♟🩑♛♝🩓🩒♟♛♚♝🩓♞♟♚♝♚♝🩓♟🩑🩓🩑♛♟♟🩑♛♛🩒🩓-->
+    </p>
+    <div id="testing">
+        <div style="display:flex;">
+            <input type="number" id="secretlettersize" value="2">
+            <input type="text" id="secretletters" value="가나,다라,마바,사아,자차,카타,파하,__">
+            <input type="number" id="secretsize" value="6">
+        </div>
+        <p class="input_0 input-el" style="cursor:text;" contenteditable="true">
+            나는 중국인 아님
+        </p>
+        <button onclick="testingfunc();">변환!</button>
+        <p class="output_0">
+            <span></span>
+        </p>
+    </div>
+    <script>
+
+        var encryption = new ColourgreyEncryptionSystem({ charMap: ['가나', '다라', '마바', '사아', '자차', '카타', '파하', '__'], chunkSize: 6, charsForOneUnicode: 2 });
+        var encoded = encryption.encode('나는 중국인 아님');
+        var decoded = encryption.decode(encoded);
+        document.querySelector('#testing>p.output_0>span').innerHTML = `${encoded} <br> 원본: ${decoded}`;
+        var testingfunc = () => {
+            var secretlettersize = Number(document.getElementById("secretlettersize").value);
+            encryption.modifyConfig({
+                charMap: document.getElementById("secretletters").value.split(",").map((val, idx, arr) => {
+                    return val.substring(0, secretlettersize);
+                }), charsForOneUnicode: secretlettersize, chunkSize: Number(document.getElementById("secretsize").value),
+            });
+            encoded = encryption.encode(document.querySelector('#testing>p.input_0').innerText);
+            decoded = encryption.decode(encoded);
+            document.querySelector('#testing>p.output_0>span').innerHTML = `${encoded} <br> 원본: ${decoded}`;
+        }
+        var code_func = (code, { secret_letter_size, secret_letters, secret_size } = { secret_size: 6, secret_letters: '가나,다라,마바,사아,자차,카타,파하,__', secret_letter_size: 2 }) => {
+            var new_encryption = new ColourgreyEncryptionSystem();
+            new_encryption.modifyConfig({ charMap: secret_letters.split(',').map(val => val.substring(0, secret_letter_size)), charsForOneUnicode: secret_letter_size, chunkSize: secret_size });
+            var new_encoded = new_encryption.encode(code);
+            var new_decoded = new_encryption.decode(new_encoded);
+            return { encoded: new_encoded, decoded: new_decoded, encryption: new_encryption };
+        }
+        var encryption_func = (code, { secret_letter_size, secret_letters, secret_size } = { secret_size: 6, secret_letters: '가나,다라,마바,사아,자차,카타,파하,__', secret_letter_size: 2 }) => {
+            return code_func(code, { secret_size: secret_size, secret_letters: secret_letters, secret_letter_size: secret_letter_size }).encoded;
+        }
+        var decryption_func = (code, { secret_letter_size, secret_letters, secret_size } = { secret_size: 6, secret_letters: '가나,다라,마바,사아,자차,카타,파하,__', secret_letter_size: 2 }) => {
+            return code_func(code, { secret_size: secret_size, secret_letters: secret_letters, secret_letter_size: secret_letter_size }).decoded;
+        }
+        var global_changing_func = ({ secret_letter_size, secret_letters, secret_size } = { secret_size: 6, secret_letters: '가나,다라,마바,사아,자차,카타,파하,__', secret_letter_size: 2 }, cbfunc = ({ secret_size: secret_size, secret_letters: secret_letters, secret_letter_size: secret_letter_size }) => { }) => {
+            encryption.modifyConfig({ charMap: secret_letters.split(',').map(val => val.substring(0, secret_letter_size)), charsForOneUnicode: secret_letter_size, chunkSize: secret_size });
+            if (typeof cbfunc === 'function') {
+                cbfunc({ secret_size: secret_size, secret_letters: secret_letters, secret_letter_size: secret_letter_size });
+            }
+        }
+        var chessMap = {
+            '♟': 0,
+            '♞': 1,
+            '♝': 2,
+            '♜': 3,
+            'P': 4,
+            'C': 5,
+            '♛': 6,
+            'A': 7,
+            '♚': 8,
+        };
+        var charMap = [
+            '♟',
+            '♞',
+            '♝',
+            '♜',
+            'P',
+            'C',
+            '♛',
+            'A',
+            '♚'
+        ];
+
+        function decodeChessCode(chessCode) {
+            var chunkSize = 6;
+            var result = '';
+            chessCode = chessCode.replaceAll('\u{1FA51}', 'A').replaceAll('\u{1FA53}', 'P').replaceAll('\u{1FA52}', 'C');
+            for (var i = 0; i < chessCode.length; i += chunkSize) {
+                var chunk = chessCode.slice(i, i + chunkSize);
+                var value = 0;
+
+                for (var j = 0; j < chunk.length; j++) {
+                    value = value * 9 + chessMap[chunk[j]];
+                }
+
+                result += String.fromCharCode(value);
+            }
+
+            return result;
+        }
+        function encodeChessCode(chessCode) {
+            var chunkSize = 6;
+            var result = '';
+            for (var i = 0; i < chessCode.length; i++) {
+                var value = chessCode.charCodeAt(i);
+                //console.log(value);
+                var res = '';
+                for (var j = 0; j < chunkSize; j++) {
+                    var _0 = value % 9;
+                    res = charMap[_0] + res;
+                    value = (value - _0) / 9;
+                    //console.log(_0);
+                }
+                result += res;
+            }
+            return result.replaceAll('A', '\u{1FA51}').replaceAll('P', '\u{1FA53}').replaceAll('C', '\u{1FA52}');
+        }
+        window.addEventListener('load', (ev) => {
+            var queries = new URL(location.href).searchParams;
+            if (['1', 'true', 'True', 't', 'T'].includes(decodeURI(queries.get('usequery')))) {
+                var options = { secret_letter_size: parseInt(queries.get('ltr_size')), secret_letters: decodeURI(queries.get('secret')), secret_size: parseInt(queries.get('size')) }
+                options.secret_letter_size = isNaN(options.secret_letter_size) ? 2 : options.secret_letter_size;
+                options.secret_letters = !(typeof options.secret_letters === 'string' || options.secret_letters instanceof String) ? '가나,다라,마바,사아,자차,카타,파하,__' : options.secret_letters;
+                options.secret_size = isNaN(options.secret_size) ? 6 : options.secret_size;
+                global_changing_func(options, ({ secret_letter_size, secret_letters, secret_size }) => {
+                    document.getElementById("secretlettersize").value = secret_letter_size;
+                    document.getElementById("secretletters").value = secret_letters;
+                    document.getElementById("secretsize").value = secret_size;
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
