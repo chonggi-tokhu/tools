@@ -166,8 +166,8 @@ async function stoprecording(){
     recorder.addEventListener('dataavailable',function(e){ 
         console.log(e.data);
         recordedel.src=URL.createObjectURL(new Blob([e.data],{type:'audio/mp3'}));
-        recorder=false; 
-        recordingstream=false; 
+        recorder=null; 
+        //recordingstream=false; 
     });
     recorder.stop(); 
 }
