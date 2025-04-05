@@ -33,7 +33,7 @@ var gainNode = null;
  * @param {cbfuncofinit} cbfunc 
  */
 function initialise(cbfunc) {
-    source = myVideoElement instanceof HTMLVideoElement ? audioCtx.createMediaElementSource(myVideoElement) : null;
+    source = audioCtx.createMediaElementSource(myVideoElement);
     gainNode = audioCtx.createGain();
     if (typeof cbfunc === 'function') {
         cbfunc(source !==null && gainNode !==null);
