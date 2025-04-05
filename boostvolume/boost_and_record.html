@@ -11,7 +11,7 @@
     <video src="./달의약속.mp3" controls id="audio"></video>
     <audio id="recorded" controls></audio>
     <script src="./boost_audio_volume.js"></script>
-    <input type="text" value="5" placeholder="볼륨 몇배크게?">
+    <input type="text" value="5" placeholder="볼륨 몇배크게?" id="gain">
     <button onclick="boostAndRecord(document.querySelector('video'), recordedaudioel);">볼륨 5배(혹은 사용자 지정)로 녹화</button>
 
     <button onclick="audioel.pause();">멈추기</button>
