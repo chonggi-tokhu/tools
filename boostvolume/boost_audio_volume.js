@@ -62,6 +62,17 @@ function startAll(el, cbfunc) {
     if (!videolElVarInitialised) {
         return false;
     }
+    if(true){
+     source = audioCtx.createMediaElementSource(myVideoElement);
+    gainNode = audioCtx.createGain();
+        gainNode.gain.value = 5;
+    //confirm(new String(gainNode?.gain?.value));
+    var va=source.connect(gainNode);
+    //confirm(va);
+    var vb=gainNode.connect(audioCtx.destination);
+    //confirm(vb);
+        return;
+    }
     var settingAllSucceeded = false;
     initialise((boolparam) => {
         confirm(boolparam);
