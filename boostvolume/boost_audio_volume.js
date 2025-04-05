@@ -14,7 +14,7 @@ var newVideoElement = null;
  * @param {HTMLAudioElement} elparam 
  */
 function init_myVideoEl(elparam) {
-    if (!(elparam instanceof HTMLAudioElement)) {
+    if (!(elparam instanceof HTMLVideoElement)) {
         return false;
     }
     myVideoElement = elparam;
@@ -33,7 +33,7 @@ var gainNode = null;
  * @param {cbfuncofinit} cbfunc 
  */
 function initialise(cbfunc) {
-    source = myVideoElement instanceof HTMLAudioElement ? audioCtx.createMediaElementSource(myVideoElement) : null;
+    source = myVideoElement instanceof HTMLVideoElement ? audioCtx.createMediaElementSource(myVideoElement) : null;
     gainNode = audioCtx.createGain();
     if (typeof cbfunc === 'function') {
         cbfunc(source !==null && gainNode !==null);
