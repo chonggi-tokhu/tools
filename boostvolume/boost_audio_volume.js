@@ -36,15 +36,15 @@ function initialise(cbfunc) {
     source = audioCtx.createMediaElementSource(myVideoElement);
     gainNode = audioCtx.createGain();
     if (typeof cbfunc === 'function') {
-        cbfunc(source !==null && gainNode !==null);
+        cbfunc(source !== null && gainNode !== null);
     }
 }
 function setAll() {
     gainNode.gain.value = 8;
     confirm(new String(gainNode?.gain?.value));
-    var va=source.connect(gainNode);
+    var va = source.connect(gainNode);
     confirm(va);
-    var vb=gainNode.connect(audioCtx.destination);
+    var vb = gainNode.connect(audioCtx.destination);
     confirm(vb);
     //source.start();
 }
@@ -58,26 +58,26 @@ function setAll() {
  * @param {cbfuncofstartAll} cbfunc 
  */
 function startAll(el, cbfunc) {
-    
-    audioCtx=new AudioContext();
+
+    audioCtx = new AudioContext();
     var videolElVarInitialised = init_myVideoEl(el);
     if (!videolElVarInitialised) {
         return false;
     }
-    if(true){
-     source = audioCtx.createMediaElementSource(el);
-    gainNode = audioCtx.createGain();
+    if (true) {
+        source = audioCtx.createMediaElementSource(el);
+        gainNode = audioCtx.createGain();
         gainNode.gain.value = 5;
-    //confirm(new String(gainNode?.gain?.value));
-    var va=source.connect(gainNode);
-    //confirm(va);
-    var vb=gainNode.connect(audioCtx.destination);
-    //confirm(vb);
-        
-    if (typeof cbfunc === 'function') {
-        return cbfunc(el);
-    } 
- return el;
+        //confirm(new String(gainNode?.gain?.value));
+        var va = source.connect(gainNode);
+        //confirm(va);
+        var vb = gainNode.connect(audioCtx.destination);
+        //confirm(vb);
+
+        if (typeof cbfunc === 'function') {
+            return cbfunc(el);
+        }
+        return el;
     }
     var settingAllSucceeded = false;
     initialise((boolparam) => {
@@ -154,20 +154,23 @@ async function boostAndRecord(el, newel) {
     });
 }
 var recordedel = null;
-var recorder=false; 
-var recordingstream=false; 
-async function startrecording() { 
-    
-    recordingstream=audioCtx.createMediaStreamDestination();
-    recorder=new MediaRecorder(recordingstream.stream); 
-    recorder.start(); 
-} 
-async function stoprecording(){ 
-    recorder.addEventListener('dataavailable',function(e){ 
-        console.log(e.data);
-        recordedel.src=URL.createObjectURL(new Blob([e.data],{type:'audio/mp3'}));
-        recorder=null; 
-        //recordingstream=false; 
+var recorder = false;
+var recordingstream = false;
+var chunks = [];
+async function startrecording() {
+
+    recordingstream = audioCtx.createMediaStreamDestination();
+    var recorder = new MediaRecorder(recordingstream.stream);
+    recorder.start();
+    recorder.addEventListener('dataavailable', (ev) => {
+        chunks.push(ev.data);
     });
-    recorder.stop(); 
+    recorder.addEventListener('stop', (ev) => {
+        recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/mp3' }));
+        recorder = false;
+        recordingstream = false;
+    });
+}
+async function stoprecording() {
+    recorder.stop();
 }
