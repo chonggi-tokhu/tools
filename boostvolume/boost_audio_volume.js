@@ -176,6 +176,15 @@ async function startrecording() {
     });
     recorder.addEventListener('stop', (ev) => {
         recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/mp3' }));
+        recordedel.addEventListener("loadedmetadata", (ev) => {
+            if (recordedel.duration === Infinity) {
+                recordedel.currentTime = 1e101;
+
+                recordedel.addEventListener("timeupdate", (ev) => {
+                    aud.currentTime = 0;
+                }, { once: true });
+            }
+        })
         //recorder = false;
         //recordingstream = false;
     });
