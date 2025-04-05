@@ -63,7 +63,7 @@ function startAll(el, cbfunc) {
         return false;
     }
     if(true){
-     source = audioCtx.createMediaElementSource(myVideoElement);
+     source = audioCtx.createMediaElementSource(el);
     gainNode = audioCtx.createGain();
         gainNode.gain.value = 5;
     //confirm(new String(gainNode?.gain?.value));
