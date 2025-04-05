@@ -181,7 +181,7 @@ async function startrecording() {
                 recordedel.currentTime = 1e101;
 
                 recordedel.addEventListener("timeupdate", (ev) => {
-                    aud.currentTime = 0;
+                    recordedel.currentTime = 0;
                 }, { once: true });
             }
         })
