@@ -175,7 +175,7 @@ async function startRecording(recordedAudio) {
   }
 }
 
-function stopRecording() {
+async function stopRecording() {
   recorder.stop();
   mediaStream.getTracks().forEach(track => track.stop());
 }
