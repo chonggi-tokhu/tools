@@ -12,6 +12,8 @@
     <audio id="recorded" controls></audio>
     <script src="./boost_audio_volume.js"></script>
     <button onclick="boostAndRecord(document.querySelector('video'), recordedaudioel);">볼륨 5배로 녹화</button>
+
+    <button onclick="stopRecording();">멈추기</button>
     <script>
         var audioel = document.getElementById("audio");
         var recordedaudioel = document.getElementById("recorded");
