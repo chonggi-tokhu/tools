@@ -76,7 +76,7 @@ function startAll(el, cbfunc) {
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
         recordingstream = audioCtx.createMediaStreamDestination();
-        recordingstream.connect(audioCtx.destination);
+        //recordingstream.connect(audioCtx.destination);
         console.log(recordingstream);
         if (typeof cbfunc === 'function') {
             return cbfunc(el);
