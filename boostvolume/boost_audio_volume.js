@@ -69,13 +69,14 @@ function startAll(el, cbfunc) {
     if (true) {
         source = audioCtx.createMediaElementSource(el);
         gainNode = audioCtx.createGain();
-        gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value): 5;
+        gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value) : 5;
         //confirm(new String(gainNode?.gain?.value));
         var va = source.connect(gainNode);
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
         recordingstream = audioCtx.createMediaStreamDestination();
+        audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
         console.log(recordingstream);
         if (typeof cbfunc === 'function') {
@@ -101,7 +102,7 @@ function startAll(el, cbfunc) {
 }
 var _constraints = {
     audio: {
-        channelCount: 1,
+        channelCount: 2,
         sampleRate: 8192,
         sampleSize: 8,
         autoGainControl: true,
@@ -147,13 +148,34 @@ async function recordAll(el, recordedel) {
         return false;
     }
     recordedel.onplay = async (ev) => {
-        //el.srcObject = recordingstream.stream;
-        await startrecording();
+        el.srcObject = recordingstream.stream;
+        //await startrecording();
     }
     recordedel.onpause = async (ev) => {
-        //var tracks = el.srcObject.getTracks();
-        //tracks.forEach(track=>{track.stop()});
-        await stoprecording();
+        var tracks = el.srcObject.getTracks();
+        tracks.forEach(track => { track.stop() });
+
+        recordedel.addEventListener("loadedmetadata", (ev) => {
+            if (recordedel.duration === Infinity) {
+                recordedel.currentTime = 1e101;
+                var opened = false;
+                recordedel.addEventListener("timeupdate", (ev) => {
+                    recordedel.currentTime = 0;
+                    if (!opened) {
+
+                        duration = recordedel.duration;
+                        console.log(duration);
+                        var a = new Audio(recordedel.src);
+                        a.currentTime = duration;
+                        na = document.body.appendChild(a);
+                        opened = true;
+                    }
+                }, { once: true });
+            }
+
+        });
+        recordedel.load();
+        //await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
@@ -165,7 +187,7 @@ async function boostAndRecord(el, newel) {
 var recordedel = null;
 var chunks = [];
 var duration = 0;
-var na=null;
+var na = null;
 async function startrecording() {
     //recordingstream = audioCtx.createMediaStreamDestination();
     /*recorder = new MediaRecorder(recordingstream.stream);
@@ -181,21 +203,21 @@ async function startrecording() {
         recordedel.addEventListener("loadedmetadata", (ev) => {
             if (recordedel.duration === Infinity) {
                 recordedel.currentTime = 1e101;
-                var opened=false;
+                var opened = false;
                 recordedel.addEventListener("timeupdate", (ev) => {
                     recordedel.currentTime = 0;
-                    if (!opened){
-                        
-            duration = recordedel.duration;
-                console.log(duration);
-            var a =new Audio(recordedel.src);
-            a.currentTime=duration;
-            na = document.body.appendChild(a);
-                        opened=true;
+                    if (!opened) {
+
+                        duration = recordedel.duration;
+                        console.log(duration);
+                        var a = new Audio(recordedel.src);
+                        a.currentTime = duration;
+                        na = document.body.appendChild(a);
+                        opened = true;
                     }
                 }, { once: true });
             }
-            
+
         })
         //recorder = false;
         //recordingstream = false;
