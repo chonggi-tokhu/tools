@@ -162,7 +162,7 @@ var recordedel = null;
 var chunks = [];
 async function startrecording() {
     //recordingstream = audioCtx.createMediaStreamDestination();
-    recorder = new MediaRecorder(recordingstream);
+    recorder = new MediaRecorder(recordingstream.stream);
     recorder.start();
 }
 async function stoprecording() {
