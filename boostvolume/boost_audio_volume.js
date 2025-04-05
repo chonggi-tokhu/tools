@@ -160,7 +160,7 @@ var chunks = [];
 async function startrecording() {
 
     recordingstream = audioCtx.createMediaStreamDestination();
-    var recorder = new MediaRecorder(recordingstream.stream);
+    recorder = new MediaRecorder(recordingstream.stream);
     recorder.start();
     recorder.addEventListener('dataavailable', (ev) => {
         chunks.push(ev.data);
