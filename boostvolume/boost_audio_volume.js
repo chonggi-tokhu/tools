@@ -156,14 +156,15 @@ async function boostAndRecord(el, newel) {
 var recordedel = null;
 var recorder=false; 
 var recordingstream=false; 
-async function startrecording(){ 
+async function startrecording() { 
+    
     recordingstream=audioCtx.createMediaStreamDestination();
     recorder=new MediaRecorder(recordingstream.stream); 
     recorder.start(); 
 } 
 async function stoprecording(){ 
     recorder.addEventListener('dataavailable',function(e){ 
-        recordedel.src=URL.createObjectURL(e.data);
+        recordedel.src=URL.createObjectURL(new Blob([e.data],{type:'audio/mp3'}));
         recorder=false; 
         recordingstream=false; 
     });
