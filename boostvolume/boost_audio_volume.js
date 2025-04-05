@@ -157,14 +157,16 @@ async function boostAndRecord(el, newel) {
 
 var recorder;
 var mediaStream;
-
+var chunks=[];
 async function startRecording(recordedAudio) {
   try {
     mediaStream = await navigator.mediaDevices.getDisplayMedia({ audio: true });
     recorder = new MediaRecorder(mediaStream);
-
-    recorder.ondataavailable = (event) => {
-      const blob = new Blob([event.data], { type: 'audio/mp3' }); // Or other audio type
+    recorder.ondataavailable=(event)=>{
+        chunks.push(event.data);
+    }
+    recorder.onstop = (event) => {
+      const blob = new Blob(chunks, { type: 'audio/mp3' }); // Or other audio type
       const url = URL.createObjectURL(blob);
       recordedAudio.src = url;
       recordedAudio.controls = true; // Add controls for playback
