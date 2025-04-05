@@ -171,6 +171,7 @@ async function startRecording(recordedAudio) {
     };
     recorder.start();
   } catch (error) {
+      confirm(error);
     console.error('Error accessing microphone:', error);
   }
 }
