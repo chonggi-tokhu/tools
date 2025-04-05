@@ -36,7 +36,7 @@ function initialise(cbfunc) {
     source = myVideoElement instanceof HTMLAudioElement ? audioCtx.createMediaElementSource(myVideoElement) : null;
     gainNode = audioCtx.createGain();
     if (typeof cbfunc === 'function') {
-        cbfunc(source instanceof MediaElementAudioSourceNode && gainNode instanceof GainNode);
+        cbfunc(source !==null && gainNode !==null);
     }
 }
 function setAll() {
