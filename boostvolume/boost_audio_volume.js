@@ -1,4 +1,4 @@
-var oldlog = console.log;
+/*var oldlog = console.log;
 console.log=function(){
     document.body.innerHTML+=arguments.join('')+'<br>';
     oldlog.apply(null,arguments);
@@ -6,7 +6,7 @@ console.log=function(){
 var olderror =console.error;
 console.error=function(){
     document.body.innerHTML+=arguments.join('')+'<br>';
-    olderror.apply(null,arguments)}
+    olderror.apply(null,arguments)}*/
 var myVideoElement = null;
 var newVideoElement = null;
 /**
