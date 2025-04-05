@@ -142,9 +142,9 @@ async function recordAll(el, recordedel) {
     if (!videolElVarInitialised || !(recordedel instanceof HTMLAudioElement)) {
         return false;
     }
-    await startRecording(el);
+    await startrecording();
     recordedel.onpause = async (ev) => {
-        await stopRecording();
+        await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
@@ -156,12 +156,12 @@ async function boostAndRecord(el, newel) {
 var recordedel = null;
 var recorder=false; 
 var recordingstream=false; 
-function startrecording(){ 
+async function startrecording(){ 
     recordingstream=audioCtx.createMediaStreamDestination();
     recorder=new MediaRecorder(recordingstream.stream); 
     recorder.start(); 
 } 
-function stoprecording(){ 
+async function stoprecording(){ 
     recorder.addEventListener('dataavailable',function(e){ 
         recordedel.src=URL.createObjectURL(e.data);
         recorder=false; 
