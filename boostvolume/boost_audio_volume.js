@@ -177,7 +177,7 @@ async function startrecording() {
         chunks.push(ev.data);
     });
     recorder.addEventListener('stop', (ev) => {
-        recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/mp3' }));
+        recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/wav' }));
         recordedel.addEventListener("loadedmetadata", (ev) => {
             if (recordedel.duration === Infinity) {
                 recordedel.currentTime = 1e101;
