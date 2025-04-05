@@ -139,7 +139,7 @@ async function stopRecordingAudio(newel) {
 }
 async function recordAll(el, recordedel) {
     var videolElVarInitialised = init_newVideoEl(el);
-    if (!videolElVarInitialised || !(recordedel instanceof HTMLAudioElement)) {
+    if (!videolElVarInitialised) {
         return false;
     }
     await startrecording();
