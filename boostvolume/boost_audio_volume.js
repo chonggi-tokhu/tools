@@ -147,10 +147,13 @@ async function recordAll(el, recordedel) {
         return false;
     }
     recordedel.onplay = async (ev) => {
-        await startrecording();
+        el.srcObject = recordingstream.stream;
+        //await startrecording();
     }
     recordedel.onpause = async (ev) => {
-        await stoprecording();
+        var tracks = el.srcObject.getTracks();
+        tracks.forEach(track=>{track.stop()});
+        //await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
