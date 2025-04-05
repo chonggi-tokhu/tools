@@ -1,0 +1,124 @@
+var myVideoElement = null;
+var newVideoElement = null;
+/**
+ * 
+ * @param {HTMLAudioElement} elparam 
+ */
+function init_myVideoEl(elparam) {
+    if (!(elparam instanceof HTMLAudioElement)) {
+        return false;
+    }
+    myVideoElement = elparam;
+    return true;
+}
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var source = null;
+var gainNode = null;
+/**
+ * 
+ * @callback cbfuncofinit
+ * @param {boolean} succeeded
+ */
+/**
+ * 
+ * @param {cbfuncofinit} cbfunc 
+ */
+function initialise(cbfunc) {
+    source = myVideoElement instanceof HTMLAudioElement ? audioCtx.createMediaElementSource(myVideoElement) : null;
+    gainNode = audioCtx.createGain();
+    if (typeof cbfunc === 'function') {
+        cbfunc(source instanceof MediaElementAudioSourceNode && gainNode instanceof GainNode);
+    }
+}
+function setAll() {
+    gainNode.gain.value = 2;
+    source?.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+}
+/**
+ * @callback cbfuncofstartAll
+ * @param {HTMLAudioElement} audioparam
+ */
+/**
+ * 
+ * @param {HTMLAudioElement} el 
+ * @param {cbfuncofstartAll} cbfunc 
+ */
+function startAll(el, cbfunc) {
+    var videolElVarInitialised = init_myVideoEl(el);
+    if (!videolElVarInitialised) {
+        return false;
+    }
+    var settingAllSucceeded = false;
+    initialise((boolparam) => {
+        if (boolparam) {
+            setAll();
+            settingAllSucceeded = true;
+        }
+    });
+    if (!settingAllSucceeded) {
+        return false;
+    }
+    if (typeof cbfunc === 'function') {
+        return cbfunc(myVideoElement);
+    }
+    return myVideoElement;
+}
+var _constraints = {
+    audio: {
+        channelCount: 1,
+        sampleRate: 8192,
+        sampleSize: 8,
+        autoGainControl: true,
+        noiseSuppression: true,
+        echoCancellation: true,
+    },
+    video: false,
+};
+function init_newVideoEl(elparam) {
+    if (!(elparam instanceof HTMLAudioElement)) {
+        return false;
+    }
+    newVideoElement = elparam;
+    return true;
+}
+/**
+ * 
+ * @param {HTMLAudioElement} newel 
+ * @param {MediaStreamConstraints} _constraintsparam 
+ */
+async function recordAudio(newel, _constraintsparam) {
+    if (!(newel instanceof HTMLAudioElement)) {
+        return;
+    }
+    newel.srcObject = await navigator.mediaDevices.getDisplayMedia(_constraintsparam);
+}
+/**
+ * 
+ * @param {HTMLAudioElement} newel 
+ */
+async function stopRecordingAudio(newel) {
+    if (!(newel instanceof HTMLAudioElement)) {
+        return;
+    }
+    var tracks = newel.srcObject.getTracks();
+    tracks.forEach((val, idx, arr) => {
+        val.stop();
+    });
+}
+async function recordAll(el, recordedel) {
+    var videolElVarInitialised = init_newVideoEl(el);
+    if (!videolElVarInitialised || !(recordedel instanceof HTMLAudioElement)) {
+        return false;
+    }
+    await recordAudio(el, _constraints);
+    recordedel.onpause = async (ev) => {
+        await stopRecordingAudio(el);
+    }
+}
+async function boostAndRecord(el, newel) {
+    startAll(el, async (thel) => {
+        thel.play();
+        await recordAll(newel, thel);
+    });
+}
