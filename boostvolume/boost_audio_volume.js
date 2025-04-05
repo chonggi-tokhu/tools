@@ -148,34 +148,13 @@ async function recordAll(el, recordedel) {
         return false;
     }
     recordedel.onplay = async (ev) => {
-        el.srcObject = recordingstream.stream;
-        //await startrecording();
+        //el.srcObject = recordingstream.stream;
+        await startrecording();
     }
     recordedel.onpause = async (ev) => {
-        var tracks = el.srcObject.getTracks();
-        tracks.forEach(track => { track.stop() });
-
-        recordedel.addEventListener("loadedmetadata", (ev) => {
-            if (recordedel.duration === Infinity) {
-                recordedel.currentTime = 1e101;
-                var opened = false;
-                recordedel.addEventListener("timeupdate", (ev) => {
-                    recordedel.currentTime = 0;
-                    if (!opened) {
-
-                        duration = recordedel.duration;
-                        console.log(duration);
-                        var a = new Audio(recordedel.src);
-                        a.currentTime = duration;
-                        na = document.body.appendChild(a);
-                        opened = true;
-                    }
-                }, { once: true });
-            }
-
-        });
-        recordedel.load();
-        //await stoprecording();
+        //var tracks = el.srcObject.getTracks();
+        //tracks.forEach(track=>{track.stop()});
+        await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
@@ -195,6 +174,9 @@ async function startrecording() {
     var mediaStreamDestination = audioCtx.createMediaStreamDestination();
     gainNode.connect(mediaStreamDestination);
     recorder = new MediaRecorder(mediaStreamDestination.stream);
+    recorder.stream.getTracks().forEach((val, idx, arr) => {
+        arr[idx].applyConstraints(_constraints);
+    })
     recorder.addEventListener('dataavailable', (ev) => {
         chunks.push(ev.data);
     });
