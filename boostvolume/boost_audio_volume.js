@@ -20,7 +20,7 @@ function init_myVideoEl(elparam) {
     myVideoElement = elparam;
     return true;
 }
-var audioCtx = new window.AudioContext();
+var audioCtx = new AudioContext();
 var source = null;
 var gainNode = null;
 /**
