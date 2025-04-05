@@ -153,32 +153,19 @@ async function boostAndRecord(el, newel) {
         await recordAll(newel, thel);
     });
 }
-
-
-var recorder;
-var mediaStream;
-var chunks=[];
-async function startRecording(recordedAudio) {
-  try {
-    mediaStream = await navigator.mediaDevices.getDisplayMedia({ audio: true });
-    recorder = new MediaRecorder(mediaStream);
-    recorder.ondataavailable=(event)=>{
-        chunks.push(event.data);
-    }
-    recorder.onstop = (event) => {
-      const blob = new Blob(chunks, { type: 'audio/mp3' }); // Or other audio type
-      const url = URL.createObjectURL(blob);
-      recordedAudio.src = url;
-      recordedAudio.controls = true; // Add controls for playback
-    };
-    recorder.start();
-  } catch (error) {
-      confirm(error);
-    console.error('Error accessing microphone:', error);
-  }
-}
-
-async function stopRecording() {
-  recorder.stop();
-  mediaStream.getTracks().forEach(track => track.stop());
+var recordedel = null;
+var recorder=false; 
+var recordingstream=false; 
+function startrecording(){ 
+    recordingstream=audioCtx.createMediaStreamDestination();
+    recorder=new MediaRecorder(recordingstream.stream); 
+    recorder.start(); 
+} 
+function stoprecording(){ 
+    recorder.addEventListener('dataavailable',function(e){ 
+        recordedel.src=URL.createObjectURL(e.data);
+        recorder=false; 
+        recordingstream=false; 
+    });
+    recorder.stop(); 
 }
