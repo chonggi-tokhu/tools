@@ -164,6 +164,8 @@ async function boostAndRecord(el, newel) {
 }
 var recordedel = null;
 var chunks = [];
+var duration = 0;
+var na=null;
 async function startrecording() {
     //recordingstream = audioCtx.createMediaStreamDestination();
     /*recorder = new MediaRecorder(recordingstream.stream);
@@ -184,6 +186,11 @@ async function startrecording() {
                     recordedel.currentTime = 0;
                 }, { once: true });
             }
+            duration = recordedel.duration;
+            var a =new Audio(recordedel.src);
+            a.currentTime=duration;
+            na = document.body.appendChild(a);
+            
         })
         //recorder = false;
         //recordingstream = false;
