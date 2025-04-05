@@ -3,6 +3,10 @@ console.log=function(){
     document.body.innerHTML+=arguments.join('')+'<br>';
     oldlog.apply(null,arguments);
 }
+var olderror =console.error;
+console.error=function(){
+    document.body.innerHTML+=arguments.join('')+'<br>';
+    olderror.apply(null,arguments)}
 var myVideoElement = null;
 var newVideoElement = null;
 /**
