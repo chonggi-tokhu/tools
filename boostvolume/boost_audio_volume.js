@@ -41,8 +41,11 @@ function initialise(cbfunc) {
 }
 function setAll() {
     gainNode.gain.value = 2;
-    source.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    confirm(gainNode.gain.value);
+    var va=source.connect(gainNode);
+    confirm(va);
+    var vb=gainNode.connect(audioCtx.destination);
+    confirm(vb);
 }
 /**
  * @callback cbfuncofstartAll
