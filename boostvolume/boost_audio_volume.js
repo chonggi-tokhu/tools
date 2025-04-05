@@ -73,7 +73,11 @@ function startAll(el, cbfunc) {
     //confirm(va);
     var vb=gainNode.connect(audioCtx.destination);
     //confirm(vb);
-        return;
+        
+    if (typeof cbfunc === 'function') {
+        return cbfunc(el);
+    } 
+ return el;
     }
     var settingAllSucceeded = false;
     initialise((boolparam) => {
