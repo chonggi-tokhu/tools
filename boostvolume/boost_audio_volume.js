@@ -105,9 +105,7 @@ var _constraints = {
         channelCount: 2,
         sampleRate: 8192,
         sampleSize: 8,
-        autoGainControl: true,
         noiseSuppression: true,
-        echoCancellation: true,
     },
     video: false,
 };
