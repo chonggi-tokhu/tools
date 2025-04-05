@@ -69,7 +69,7 @@ function startAll(el, cbfunc) {
     if (true) {
         source = audioCtx.createMediaElementSource(el);
         gainNode = audioCtx.createGain();
-        gainNode.gain.value = 5;
+        gainNode.gain.value = document.getElementById("gain")?.value||5;
         //confirm(new String(gainNode?.gain?.value));
         var va = source.connect(gainNode);
         //confirm(va);
