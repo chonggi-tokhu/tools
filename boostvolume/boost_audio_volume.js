@@ -104,7 +104,7 @@ var _constraints = {
     audio: {
         channelCount: 2,
         sampleRate: 8192,
-        sampleSize: 16,
+        sampleSize: 24,
         noiseSuppression: true,
     },
     video: false,
