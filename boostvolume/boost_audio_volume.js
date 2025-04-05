@@ -76,6 +76,7 @@ function startAll(el, cbfunc) {
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
         recordingstream = audioCtx.createMediaStreamDestination();
+        recordingstream.connect(audioCtx.destination);
         console.log(recordingstream);
         if (typeof cbfunc === 'function') {
             return cbfunc(el);
@@ -162,7 +163,7 @@ var recordedel = null;
 var chunks = [];
 async function startrecording() {
     //recordingstream = audioCtx.createMediaStreamDestination();
-    recorder = new MediaRecorder(audioCtx.createMediaStreamSource(recordingstream.stream).mediaStream);
+    recorder = new MediaRecorder(recordingstream.stream);
     recorder.start();
 }
 async function stoprecording() {
