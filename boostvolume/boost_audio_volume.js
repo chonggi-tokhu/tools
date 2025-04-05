@@ -162,6 +162,8 @@ async function startrecording() {
     recordingstream = audioCtx.createMediaStreamDestination();
     recorder = new MediaRecorder(recordingstream.stream);
     recorder.start();
+}
+async function stoprecording() {
     recorder.addEventListener('dataavailable', (ev) => {
         chunks.push(ev.data);
     });
@@ -170,7 +172,5 @@ async function startrecording() {
         //recorder = false;
         //recordingstream = false;
     });
-}
-async function stoprecording() {
     recorder.stop();
 }
