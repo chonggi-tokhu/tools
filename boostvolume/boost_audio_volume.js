@@ -147,13 +147,13 @@ async function recordAll(el, recordedel) {
         return false;
     }
     recordedel.onplay = async (ev) => {
-        el.srcObject = recordingstream.stream;
-        //await startrecording();
+        //el.srcObject = recordingstream.stream;
+        await startrecording();
     }
     recordedel.onpause = async (ev) => {
-        var tracks = el.srcObject.getTracks();
-        tracks.forEach(track=>{track.stop()});
-        //await stoprecording();
+        //var tracks = el.srcObject.getTracks();
+        //tracks.forEach(track=>{track.stop()});
+        await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
@@ -166,10 +166,11 @@ var recordedel = null;
 var chunks = [];
 async function startrecording() {
     //recordingstream = audioCtx.createMediaStreamDestination();
-    recorder = new MediaRecorder(recordingstream.stream);
-    recorder.start();
-}
-async function stoprecording() {
+    /*recorder = new MediaRecorder(recordingstream.stream);
+    recorder.start();*/
+    var mediaStreamDestination = audioCtx.createMediaStreamDestination();
+    gainNode.connect(mediaStreamDestination);
+    recorder = new MediaRecorder(mediaStreamDestination.stream);
     recorder.addEventListener('dataavailable', (ev) => {
         chunks.push(ev.data);
     });
@@ -178,5 +179,8 @@ async function stoprecording() {
         //recorder = false;
         //recordingstream = false;
     });
+    recorder.start();
+}
+async function stoprecording() {
     recorder.stop();
 }
