@@ -142,9 +142,9 @@ async function recordAll(el, recordedel) {
     if (!videolElVarInitialised || !(recordedel instanceof HTMLAudioElement)) {
         return false;
     }
-    await recordAudio(el, _constraints);
+    await startRecording(el);
     recordedel.onpause = async (ev) => {
-        await stopRecordingAudio(el);
+        await stopRecording();
     }
 }
 async function boostAndRecord(el, newel) {
@@ -152,4 +152,30 @@ async function boostAndRecord(el, newel) {
         thel.play();
         await recordAll(newel, thel);
     });
+}
+
+
+var recorder;
+var mediaStream;
+
+async function startRecording(recordedAudio) {
+  try {
+    mediaStream = await navigator.mediaDevices.getDisplayMedia({ audio: true });
+    recorder = new MediaRecorder(mediaStream);
+
+    recorder.ondataavailable = (event) => {
+      const blob = new Blob([event.data], { type: 'audio/mp3' }); // Or other audio type
+      const url = URL.createObjectURL(blob);
+      recordedAudio.src = url;
+      recordedAudio.controls = true; // Add controls for playback
+    };
+    recorder.start();
+  } catch (error) {
+    console.error('Error accessing microphone:', error);
+  }
+}
+
+function stopRecording() {
+  recorder.stop();
+  mediaStream.getTracks().forEach(track => track.stop());
 }
