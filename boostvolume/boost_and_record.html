@@ -11,7 +11,8 @@
     <audio src="./달의약속.mp3" controls id="audio"></audio>
     <audio id="recorded" controls></audio>
     <script src="./boost_audio_volume.js"></script>
-    <button onclick="boostAndRecord(audioel, recordedaudioel);">2배로녹화</button>
+    <button onclick="startAll(el, (thel) => {
+    });">2배로녹화</button>
     <script>
         var audioel = document.getElementById("audio");
         var recordedaudioel = document.getElementById("recorded");
