@@ -181,15 +181,19 @@ async function startrecording() {
         recordedel.addEventListener("loadedmetadata", (ev) => {
             if (recordedel.duration === Infinity) {
                 recordedel.currentTime = 1e101;
-
+                var opened=false;
                 recordedel.addEventListener("timeupdate", (ev) => {
                     recordedel.currentTime = 0;
-                }, { once: true });
+                    if (!opened){
+                        
             duration = recordedel.duration;
                 console.log(duration);
             var a =new Audio(recordedel.src);
             a.currentTime=duration;
             na = document.body.appendChild(a);
+                        opened=true;
+                    }
+                }, { once: true });
             }
             
         })
