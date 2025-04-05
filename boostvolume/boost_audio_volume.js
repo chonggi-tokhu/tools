@@ -20,7 +20,7 @@ function init_myVideoEl(elparam) {
     myVideoElement = elparam;
     return true;
 }
-var audioCtx = new AudioContext();
+var audioCtx = null;
 var source = null;
 var gainNode = null;
 /**
@@ -58,6 +58,8 @@ function setAll() {
  * @param {cbfuncofstartAll} cbfunc 
  */
 function startAll(el, cbfunc) {
+    
+    audioCtx=new AudioContext();
     var videolElVarInitialised = init_myVideoEl(el);
     if (!videolElVarInitialised) {
         return false;
