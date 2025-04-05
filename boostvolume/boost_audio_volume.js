@@ -1,3 +1,8 @@
+var oldlog = console.log;
+console.log=function(){
+    document.body.innerHTML+=arguments.join('')+'<br>';
+    oldlog.apply(null,arguments);
+}
 var myVideoElement = null;
 var newVideoElement = null;
 /**
@@ -32,7 +37,7 @@ function initialise(cbfunc) {
 }
 function setAll() {
     gainNode.gain.value = 2;
-    source?.connect(gainNode);
+    source.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 }
 /**
