@@ -185,11 +185,12 @@ async function startrecording() {
                 recordedel.addEventListener("timeupdate", (ev) => {
                     recordedel.currentTime = 0;
                 }, { once: true });
-            }
+                
             duration = recordedel.duration;
             var a =new Audio(recordedel.src);
             a.currentTime=duration;
             na = document.body.appendChild(a);
+            }
             
         })
         //recorder = false;
