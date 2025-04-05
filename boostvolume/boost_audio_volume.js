@@ -60,6 +60,7 @@ function startAll(el, cbfunc) {
     }
     var settingAllSucceeded = false;
     initialise((boolparam) => {
+        confirm(boolparam);
         if (boolparam) {
             setAll();
             settingAllSucceeded = true;
