@@ -9,6 +9,8 @@ console.error=function(){
     olderror.apply(null,arguments)}*/
 var myVideoElement = null;
 var newVideoElement = null;
+var recorder = null;
+var recordingstream = null;
 /**
  * 
  * @param {HTMLAudioElement} elparam 
@@ -73,7 +75,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
-
+        recordingstream = audioCtx.createMediaStreamDestination();
         if (typeof cbfunc === 'function') {
             return cbfunc(el);
         }
@@ -142,24 +144,24 @@ async function recordAll(el, recordedel) {
     if (!videolElVarInitialised) {
         return false;
     }
-    await startrecording();
+    recordedel.onplay = async (ev) => {
+        await startrecording();
+    }
     recordedel.onpause = async (ev) => {
         await stoprecording();
     }
 }
 async function boostAndRecord(el, newel) {
     startAll(el, async (thel) => {
-        thel.play();
         await recordAll(newel, thel);
+        thel.play();
     });
 }
 var recordedel = null;
-var recorder = false;
-var recordingstream = false;
 var chunks = [];
 async function startrecording() {
     recordingstream = audioCtx.createMediaStreamDestination();
-    recorder = new MediaRecorder(audioCtx.createMediaStreamDestination().stream);
+    recorder = new MediaRecorder(source);
     recorder.start();
 }
 async function stoprecording() {
