@@ -167,8 +167,8 @@ async function startrecording() {
     });
     recorder.addEventListener('stop', (ev) => {
         recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/mp3' }));
-        recorder = false;
-        recordingstream = false;
+        //recorder = false;
+        //recordingstream = false;
     });
 }
 async function stoprecording() {
