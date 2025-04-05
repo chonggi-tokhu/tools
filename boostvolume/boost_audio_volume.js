@@ -46,7 +46,7 @@ function setAll() {
     confirm(va);
     var vb=gainNode.connect(audioCtx.destination);
     confirm(vb);
-    source.start();
+    //source.start();
 }
 /**
  * @callback cbfuncofstartAll
