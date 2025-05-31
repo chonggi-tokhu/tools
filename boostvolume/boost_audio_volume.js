@@ -288,7 +288,7 @@ async function startrecording() {
         if (lamejsbool){
             var reader = new FileReader();
             var blob0=new Blob(chunks, { type: 'audio/wav' });
-            reader.readAsArrayBuffer(blob);
+            reader.readAsArrayBuffer(blob0);
             reader.onloadend=(ev)=>{
                 audioContext.decodeAudioData(reader.result,(audioBuffer)=>{
                     mymp3 = audioBufferToWav(audioBuffer);
