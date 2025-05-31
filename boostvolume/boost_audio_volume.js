@@ -61,8 +61,7 @@ function audioBufferToWav(aBuffer) {
       return wavToMp3(
         wavHdr.channels,
         wavHdr.sampleRate,
-        left,
-        right,
+        data
       );
     }
     //MONO
