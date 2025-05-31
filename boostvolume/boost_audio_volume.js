@@ -294,6 +294,7 @@ async function startrecording() {
                     recordedel.src=URL.createObjectURL(mymp3);
                 });
             }
+          return;
             
         }
         recordedel.src = URL.createObjectURL(new Blob(chunks, { type: 'audio/wav' }));
