@@ -85,9 +85,12 @@ function wavToMp3(channels, sampleRate, samples) {
     var mp3enc = new lamejs.Mp3Encoder(channels, sampleRate, 128);
     var remaining = samples.length;
     var samplesPerFrame = 1152;
+  var left = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
+  var right = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
     for (var i = 0; remaining >= samplesPerFrame; i += samplesPerFrame) {
-        var mono = samples.subarray(i, i + samplesPerFrame);
-        var mp3buf = mp3enc.encodeBuffer(mono);
+        var leftsubarr = samples.subarray(i, i + samplesPerFrame);
+        var rightsubarr = samples.subarray(i, i + samplesPerFrame);
+        var mp3buf = mp3enc.encodeBuffer(leftsubarr,rightsubarr);
         if (mp3buf.length > 0) {
             buffer.push(new Int8Array(mp3buf));
         }
