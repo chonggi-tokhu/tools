@@ -178,8 +178,8 @@ function startAll(el, cbfunc) {
     }
     if (true) {
         source = audioCtx.createMediaElementSource(el);
-        var splitter = audioCtx.createChannelSplitter(1);
-      source.connect(splitter);
+        //var splitter = audioCtx.createChannelSplitter(1);
+      //source.connect(splitter);
         gainNode = audioCtx.createGain();
         gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value) : 5;
         //confirm(new String(gainNode?.gain?.value));
@@ -187,7 +187,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
-      splitter.connect(gainNode);
+      //splitter.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
