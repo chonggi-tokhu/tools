@@ -129,9 +129,10 @@ function init_myVideoEl(elparam) {
         return false;
     }
     myVideoElement = elparam;
-    for (var track of myVideoElement.audioTracks){
+    /*for (var track of myVideoElement.audioTracks){
       track.applyConstraints(_constraints);
-    }
+    }*/
+    //I don't use safari
     return true;
 }
 var audioCtx = null;
@@ -180,7 +181,7 @@ function startAll(el, cbfunc) {
         return false;
     }
     if (true) {
-      el.src
+      
         source = audioCtx.createMediaElementSource(el);
         //var merger = audioCtx.createChannelMerger(2);
         //source.connect(merger);
