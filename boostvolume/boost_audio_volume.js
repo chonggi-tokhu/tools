@@ -178,8 +178,8 @@ function startAll(el, cbfunc) {
     }
     if (true) {
         source = audioCtx.createMediaElementSource(el);
-        var merger = audioCtx.createChannelMerger(2);
-        source.connect(merger);
+        //var merger = audioCtx.createChannelMerger(2);
+        //source.connect(merger);
         gainNode = audioCtx.createGain();
         gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value) : 5;
         //confirm(new String(gainNode?.gain?.value));
@@ -187,7 +187,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
-        merger.connect(gainNode);
+        //merger.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
@@ -215,7 +215,7 @@ function startAll(el, cbfunc) {
 }
 var _constraints = {
     audio: {
-        channelCount: 2,
+        channelCount: 1,
         sampleRate: 8192,
         sampleSize: 24,
         noiseSuppression: true,
