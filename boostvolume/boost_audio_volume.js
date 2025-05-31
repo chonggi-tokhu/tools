@@ -1,4 +1,4 @@
-var lamejs = window['lamejs'];
+var lamejs = window['lamejs'] ? window['lamejs'] : false;
 function audioBufferToWav(aBuffer) {
   let numOfChan = aBuffer.numberOfChannels,
     btwLength = aBuffer.length * numOfChan * 2 + 44,
