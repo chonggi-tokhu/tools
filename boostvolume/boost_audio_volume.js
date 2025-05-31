@@ -113,7 +113,7 @@ function wavToMp3(channels, sampleRate, [left,right]) {
 
     // send the download link to the console
     console.log('mp3 download:', bUrl);
-
+    return bUrl;
 }
 
 /*var oldlog = console.log;
@@ -316,7 +316,7 @@ async function startrecording() {
                 audioCtx.decodeAudioData(reader.result,(audioBuffer)=>{
                   audioBuffer.numberOfChannels=1;
                     mymp3 = audioBufferToWav(audioBuffer);
-                    recordedel.src=URL.createObjectURL(mymp3);
+                    recordedel.src=mymp3;
                 });
             }
           return;
