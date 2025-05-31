@@ -304,7 +304,7 @@ async function startrecording() {
             var blob0=new Blob([chunks], { type: 'audio/wav' });
             reader.readAsArrayBuffer(blob0);
             reader.onloadend=(ev)=>{
-                audioCtx.decodeAudioData(reader.result,(audioBuffer)=>{
+                new AudioContext().decodeAudioData(reader.result,(audioBuffer)=>{
                   audioBuffer.numberOfChannels=1;
                     mymp3 = audioBufferToWav(audioBuffer);
                     recordedel.src=URL.createObjectURL(mymp3);
