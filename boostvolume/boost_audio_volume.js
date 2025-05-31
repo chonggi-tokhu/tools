@@ -1,5 +1,5 @@
-var lamejsbool = window['lamejs'] ? true : false;
-var lamejs = lamejsbool?window['lamejs']:false;
+var lamejsbool = window['Module'] ? true : false;
+var lamejs = lamejsbool?window['Module']:false;
 function audioBufferToWav(aBuffer) {
   let numOfChan = aBuffer.numberOfChannels,
     btwLength = aBuffer.length * numOfChan * 2 + 44,
