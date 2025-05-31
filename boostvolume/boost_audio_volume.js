@@ -169,12 +169,15 @@ function setAll() {
 function startAll(el, cbfunc) {
 
     audioCtx = new AudioContext();
+  
     var videolElVarInitialised = init_myVideoEl(el);
     if (!videolElVarInitialised) {
         return false;
     }
     if (true) {
         source = audioCtx.createMediaElementSource(el);
+        var splitter = audioCtx.createChannelSplitter(1);
+      source.connect(splitter);
         gainNode = audioCtx.createGain();
         gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value) : 5;
         //confirm(new String(gainNode?.gain?.value));
@@ -182,6 +185,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
+      splitter.connect(gainNode,0);
         recordingstream = audioCtx.createMediaStreamDestination();
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
