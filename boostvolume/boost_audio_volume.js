@@ -301,10 +301,10 @@ async function startrecording() {
     recorder.addEventListener('stop', (ev) => {
         if (lamejsbool){
             var reader = new FileReader();
-            var blob0=new Blob([chunks], { type: 'audio/wav' });
+            var blob0=new Blob(chunks, { type: 'audio/wav' });
             reader.readAsArrayBuffer(blob0);
             reader.onloadend=(ev)=>{
-                new AudioContext().decodeAudioData(reader.result,(audioBuffer)=>{
+                audioCtx.decodeAudioData(reader.result,(audioBuffer)=>{
                   audioBuffer.numberOfChannels=1;
                     mymp3 = audioBufferToWav(audioBuffer);
                     recordedel.src=URL.createObjectURL(mymp3);
