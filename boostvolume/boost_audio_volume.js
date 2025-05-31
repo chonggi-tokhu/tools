@@ -157,9 +157,9 @@ function initialise(cbfunc) {
 function setAll() {
     gainNode.gain.value = 8;
     confirm(new String(gainNode?.gain?.value));
-    var va = source.connect(gainNode);
+    var va = source.connect(gainNode,0);
     confirm(va);
-    var vb = gainNode.connect(audioCtx.destination);
+    var vb = gainNode.connect(audioCtx.destination,0);
     confirm(vb);
     //source.start();
 }
@@ -188,15 +188,15 @@ function startAll(el, cbfunc) {
         gainNode = audioCtx.createGain();
         gainNode.gain.value = !isNaN(Number(document.getElementById("gain")?.value)) ? Number(document.getElementById("gain")?.value) : 5;
         //confirm(new String(gainNode?.gain?.value));
-        var va = source.connect(gainNode);
+        var va = source.connect(gainNode,0);
         //confirm(va);
-        var vb = gainNode.connect(audioCtx.destination);
+        var vb = gainNode.connect(audioCtx.destination,0);
         //confirm(vb);
         //merger.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
         recordingstream.channelCount=1;
         audioCtx.sampleRate = 8192;
-        //recordingstream.connect(audioCtx.destination);
+        //recordingstream.connect(audioCtx.destination,0);
         console.log(recordingstream);
         if (typeof cbfunc === 'function') {
             return cbfunc(el);
@@ -290,7 +290,7 @@ async function startrecording() {
     /*recorder = new MediaRecorder(recordingstream.stream);
     recorder.start();*/
     var mediaStreamDestination = audioCtx.createMediaStreamDestination();
-    gainNode.connect(mediaStreamDestination);
+    gainNode.connect(mediaStreamDestination,0);
     recorder = new MediaRecorder(mediaStreamDestination.stream,{channelCount:1,});
     recorder.stream.getTracks().forEach((val, idx, arr) => {
         arr[idx].applyConstraints(_constraints);
@@ -301,11 +301,11 @@ async function startrecording() {
     recorder.addEventListener('stop', (ev) => {
         if (lamejsbool){
             var reader = new FileReader();
-            var blob0=new Blob(chunks, { type: 'audio/wav' });
-          var audioContext = new AudioContext();
+            var blob0=new Blob([chunks], { type: 'audio/wav' });
             reader.readAsArrayBuffer(blob0);
             reader.onloadend=(ev)=>{
-                audioContext.decodeAudioData(reader.result,(audioBuffer)=>{
+                audioCtx.decodeAudioData(reader.result,(audioBuffer)=>{
+                  audioBuffer.numberOfChannels=1;
                     mymp3 = audioBufferToWav(audioBuffer);
                     recordedel.src=URL.createObjectURL(mymp3);
                 });
