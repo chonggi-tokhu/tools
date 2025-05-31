@@ -1,4 +1,5 @@
-var lamejs = window['lamejs'] ? window['lamejs'] : false;
+var lamejsbool = window['lamejs'] ? true : false;
+var lamejs = lamejsbool?window['lamejs']:false;
 function audioBufferToWav(aBuffer) {
   let numOfChan = aBuffer.numberOfChannels,
     btwLength = aBuffer.length * numOfChan * 2 + 44,
@@ -284,7 +285,7 @@ async function startrecording() {
         chunks.push(ev.data);
     });
     recorder.addEventListener('stop', (ev) => {
-        if (lamejs){
+        if (lamejsbool){
             var reader = new FileReader();
             var blob0=new Blob(chunks, { type: 'audio/wav' });
             reader.readAsArrayBuffer(blob);
