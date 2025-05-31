@@ -187,7 +187,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
-      splitter.connect(gainNode,1);
+      splitter.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
