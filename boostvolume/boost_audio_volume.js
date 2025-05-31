@@ -1,6 +1,6 @@
 
 var lamejsbool = window['lamejs'] ? true : false;
-var AudioFormat="WAV";
+var AudioFormat="MP3";
 var lamejs = lamejsbool?window['lamejs']:false;
 function audioBufferToWav(aBuffer) {
   let numOfChan = aBuffer.numberOfChannels,
@@ -58,7 +58,7 @@ function audioBufferToWav(aBuffer) {
   if (AudioFormat === "MP3") {
     //STEREO
     if (wavHdr.channels === 2){
-      return wavToMp3Stereo(
+      return wavToMp3(
         wavHdr.channels,
         wavHdr.sampleRate,
         left,
