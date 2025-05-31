@@ -189,8 +189,9 @@ function startAll(el, cbfunc) {
         //confirm(vb);
         //merger.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
+      recordingstream.channelCount=2;
         audioCtx.sampleRate = 8192;
-        //recordingstream.connect(audioCtx.destination);
+        recordingstream.connect(audioCtx.destination);
         console.log(recordingstream);
         if (typeof cbfunc === 'function') {
             return cbfunc(el);
