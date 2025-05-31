@@ -54,19 +54,21 @@ function audioBufferToWav(aBuffer) {
   var left = new Int16Array(leftData);
   var right = new Int16Array(rightData);
 
+      console.log(wavHdr.channels);
   if (AudioFormat === "MP3") {
     //STEREO
-    if (wavHdr.channels === 2)
+    if (wavHdr.channels === 2){
       return wavToMp3Stereo(
         wavHdr.channels,
         wavHdr.sampleRate,
         left,
         right,
       );
+    }
     //MONO
-    else if (wavHdr.channels === 1)
-      return wavToMp3(wavHdr.channels, wavHdr.sampleRate, data);
-  } else return new Blob([btwArrBuff], { type: "audio/wav" });
+    else if (wavHdr.channels === 1) {
+      return wavToMp3(wavHdr.channels, wavHdr.sampleRate, data); }
+  } else { return new Blob([btwArrBuff], { type: "audio/wav" }); }
 
   function setUint16(data) {
     btwView.setUint16(btwPos, data, true);
@@ -185,7 +187,7 @@ function startAll(el, cbfunc) {
         //confirm(va);
         var vb = gainNode.connect(audioCtx.destination);
         //confirm(vb);
-      splitter.connect(gainNode,0);
+      splitter.connect(gainNode,1);
         recordingstream = audioCtx.createMediaStreamDestination();
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
