@@ -61,12 +61,12 @@ function audioBufferToWav(aBuffer) {
       return wavToMp3(
         wavHdr.channels,
         wavHdr.sampleRate,
-        data
+        [left,right]
       );
     }
     //MONO
     else if (wavHdr.channels === 1) {
-      return wavToMp3(wavHdr.channels, wavHdr.sampleRate, data); }
+      return wavToMp3(wavHdr.channels, wavHdr.sampleRate, [data]); }
   } else { return new Blob([btwArrBuff], { type: "audio/wav" }); }
 
   function setUint16(data) {
@@ -80,17 +80,24 @@ function audioBufferToWav(aBuffer) {
   }
 }
 
-function wavToMp3(channels, sampleRate, samples) {
+function wavToMp3(channels, sampleRate, [left,right]) {
     var buffer = [];
     var mp3enc = new lamejs.Mp3Encoder(channels, sampleRate, 128);
-    var remaining = samples.length;
     var samplesPerFrame = 1152;
-  var left = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
-  var right = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
+  var samples = left;
+    var remaining = samples.length; 
+ // var left = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
+ // var right = new Int16Array(sampleRate); //one second of silence (get your data from the source you have)
     for (var i = 0; remaining >= samplesPerFrame; i += samplesPerFrame) {
-        var leftsubarr = samples.subarray(i, i + samplesPerFrame);
-        var rightsubarr = samples.subarray(i, i + samplesPerFrame);
-        var mp3buf = mp3enc.encodeBuffer(leftsubarr,rightsubarr);
+        var mp3buf;
+      if (right){
+        var leftsubarr = left.subarray(i, i + samplesPerFrame);
+        var rightsubarr = right.subarray(i, i + samplesPerFrame);
+        mp3buf = mp3enc.encodeBuffer(leftsubarr,rightsubarr);
+      }
+        else {
+        mp3buf = mp3enc.encodeBuffer(samples);
+        }
         if (mp3buf.length > 0) {
             buffer.push(new Int8Array(mp3buf));
         }
