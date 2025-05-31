@@ -129,6 +129,9 @@ function init_myVideoEl(elparam) {
         return false;
     }
     myVideoElement = elparam;
+    for (var track of myVideoElement.audioTracks){
+      track.applyConstraints(_constraints);
+    }
     return true;
 }
 var audioCtx = null;
@@ -177,6 +180,7 @@ function startAll(el, cbfunc) {
         return false;
     }
     if (true) {
+      el.src
         source = audioCtx.createMediaElementSource(el);
         //var merger = audioCtx.createChannelMerger(2);
         //source.connect(merger);
@@ -189,7 +193,7 @@ function startAll(el, cbfunc) {
         //confirm(vb);
         //merger.connect(gainNode);
         recordingstream = audioCtx.createMediaStreamDestination();
-      recordingstream.channelCount=2;
+        recordingstream.channelCount=2;
         audioCtx.sampleRate = 8192;
         //recordingstream.connect(audioCtx.destination);
         console.log(recordingstream);
@@ -286,7 +290,7 @@ async function startrecording() {
     recorder.start();*/
     var mediaStreamDestination = audioCtx.createMediaStreamDestination();
     gainNode.connect(mediaStreamDestination);
-    recorder = new MediaRecorder(mediaStreamDestination.stream);
+    recorder = new MediaRecorder(mediaStreamDestination.stream,{channelCount:1,});
     recorder.stream.getTracks().forEach((val, idx, arr) => {
         arr[idx].applyConstraints(_constraints);
     })
