@@ -8,7 +8,7 @@
 <body>
     <div class="body">
         <input type="text" id="keyword_len" placeholder="search keyword length">
-        <button onclick="(async()=>{var res =await get_all_json([[45,45],[48,57],[65,122]],Number(this.parentElement.querySelector('#keyword_len').value)); this.parentElement.querySelector('#output').value = JSON.stringify(res);})()">get json</button>
+        <button onclick="(async()=>{var res =await get_all_json([[45,45],[48,57],[65,122]],Number(this.parentElement.querySelector('#keyword_len').value || 3)); this.parentElement.querySelector('#output').value = JSON.stringify(res);})()">get json</button>
         <textarea id="output" disabled="disabled" rows="20" cols="20"></textarea>
     </div>
     <script>
