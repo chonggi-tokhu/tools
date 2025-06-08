@@ -65,7 +65,7 @@ async function fetch_all_ldoce(keyword_len) {
             if (inc >= keyword_len || curr_char?.length >= keyword_len) {
                 continue;
             }
-            //rtv.push(get_keywords(inc + 1, keyword_len, curr_char + chars[i]));
+            rtv.push(get_keywords(inc + 1, keyword_len, curr_char + chars[i]));
         }
         return rtv.flat();
     }
