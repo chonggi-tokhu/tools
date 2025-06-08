@@ -8,18 +8,21 @@
 <body>
     <div class="body">
         <input type="text" id="keyword_len" placeholder="search keyword length">
-        <button onclick="(async()=>{var res =await get_all_json(32,126,Number(this.parentElement.querySelector('#keyword_len').value)); this.parentElement.querySelector('#output').value = JSON.stringify(res);})()">get json</button>
+        <button onclick="(async()=>{var res =await get_all_json([[45,45],[48,57],[65,122]],Number(this.parentElement.querySelector('#keyword_len').value)); this.parentElement.querySelector('#output').value = JSON.stringify(res);})()">get json</button>
         <textarea id="output" disabled="disabled" rows="20" cols="20"></textarea>
     </div>
     <script>
         var chars = [];
-async function set_chars(from = 32, to = 126, forbidden = []) {
-
+async function set_chars([...intervals], forbidden = []) {
+    for (var i0 =0;i0< intervals.length;i0++){
+        var from = intervals[i0][0];
+        var to  =intervals[i0][1];
     for (var i = from; i < to + 1; i++) {
         if (forbidden.includes(String.fromCharCode(i))) {
             continue;
         }
         chars.push(String.fromCharCode(i));
+    }
     }
     return chars;
 }
@@ -89,7 +92,7 @@ async function get_all_json(charfrom, charto, keywords_len, forbidden = ['/', '+
     return rtv.flat();
 }
 async function test() {
-    return await get_all_json(32, 126, 1);
+    return await get_all_json([[32, 126]], 1);
 }
 /*
 https://www.ldoceonline.com/autocomplete/english/?q=a&contentType=application%2Fjson%3B%20charset%3Dutf-8
