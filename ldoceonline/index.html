@@ -82,8 +82,8 @@ async function fetch_all_ldoce(keyword_len) {
     }
     return rtv;
 }
-async function get_all_json(charfrom, charto, keywords_len, forbidden = ['/', '+']) {
-    await set_chars(charfrom, charto, forbidden);
+async function get_all_json([...intervals], keywords_len, forbidden = ['/', '+']) {
+    await set_chars(intervals, forbidden);
     var rtv_pr = await fetch_all_ldoce(keywords_len || 4);
     var rtv = [];
     for (var i = 0; i < rtv_pr.length; i++) {
