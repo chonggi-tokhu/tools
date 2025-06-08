@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>longman dictionary</title>
+</head>
+<body>
+    <div class="body">
+        <input type="text" id="keyword_len" placeholder="search keyword length">
+        <button onclick="(async()=>{var res =await get_all_json(32,126,Number(this.parentElement.querySelector('#keyword_len').value)); this.parentElement.querySelector('#output').value = JSON.stringify(res);})()">get json</button>
+        <textarea id="output" disabled="disabled" rows="20" cols="20"></textarea>
+    </div>
+    <script>
+        var chars = [];
+async function set_chars(from = 32, to = 126, forbidden = []) {
+
+    for (var i = from; i < to + 1; i++) {
+        if (forbidden.includes(String.fromCharCode(i))) {
+            continue;
+        }
+        chars.push(String.fromCharCode(i));
+    }
+    return chars;
+}
+async function fetch_ldoce_res(keyword, cbfunc) {
+    var fetched_data = await fetch('https://www.ldoceonline.com/autocomplete/english/?q=' + keyword + '&contentType=application%2Fjson%3B%20charset%3Dutf-8');
+    if (!fetched_data.ok){
+        return await cbfunc({ results: [] });
+    }
+    return typeof cbfunc === 'function' ? await cbfunc(await fetched_data.json()) : await fetched_data.json();
+}
+async function fetch_ldoce(jsonstr, cbfunc) {
+    var parsedJSON = typeof jsonstr === 'string' || jsonstr instanceof String ? JSON.parse(jsonstr) : jsonstr;
+    var rtv = [];
+    var results = parsedJSON?.results;
+    if (!(results instanceof Array)) {
+        return rtv;
+    }
+    var results_text = results.map(val => val?.searchtext);
+    var rtv_pr = results_text.map(async (val, idx, arr) => {
+        var data = await fetch('https://www.ldoceonline.com/dictionary/' + val);
+        return typeof cbfunc === 'function' ? await cbfunc(await data.text()) : null;
+    });
+
+    for (var i = 0; i < rtv_pr.length; i++) {
+        rtv.push(await rtv_pr[i]);
+    }
+    return rtv;
+}
+async function parseHTML(htmlstr) {
+    if (!(htmlstr instanceof String || typeof htmlstr === 'string')) {
+        return [];
+    }
+    var new_parser = new DOMParser();
+    var parsed = new_parser.parseFromString(htmlstr, 'text/html');
+    var rtv = Array.from(parsed.querySelectorAll('.dictionary .dictentry')).filter(val => val instanceof HTMLElement).map((val, arr, idx) => { /* console.log(val.querySelector('.Head .POS')); */ var rtv = { 'pos': val.querySelector('.Head .POS')?.innerText, contents: val?.innerHTML, word: val.parentElement.parentElement.querySelector('.pagetitle')?.innerText }; return rtv; });
+    return rtv;
+}
+async function fetch_all_ldoce(keyword_len) {
+    function get_keywords(inc, keyword_len, curr_char) {
+        var rtv = [];
+        for (var i = 0; i < chars.length; i++) {
+            rtv.push(curr_char + chars[i]);
+            if (inc >= keyword_len || curr_char?.length >= keyword_len) {
+                continue;
+            }
+            //rtv.push(get_keywords(inc + 1, keyword_len, curr_char + chars[i]));
+        }
+        return rtv.flat();
+    }
+    var keywords = get_keywords(0, keyword_len || 4, '').flat();
+    var rtv_pr = keywords.map(async (val, idx, arr) => {
+        return await fetch_ldoce_res(val, async (data) => { return await fetch_ldoce(data, async (data) => { /* console.log(idx); */ return await parseHTML(data); }) });
+    });
+    var rtv = [];
+    for (var i = 0; i < rtv_pr.length; i++) {
+        rtv.push(await rtv_pr[i]);
+    }
+    return rtv;
+}
+async function get_all_json(charfrom, charto, keywords_len, forbidden = ['/', '+']) {
+    await set_chars(charfrom, charto, forbidden);
+    var rtv_pr = await fetch_all_ldoce(keywords_len || 4);
+    var rtv = [];
+    for (var i = 0; i < rtv_pr.length; i++) {
+        rtv.push(await rtv_pr[i]);
+    }
+    return rtv.flat();
+}
+async function test() {
+    return await get_all_json(32, 126, 1);
+}
+/*
+https://www.ldoceonline.com/autocomplete/english/?q=a&contentType=application%2Fjson%3B%20charset%3Dutf-8
+*/
+    </script>
+</body>
+</html>
