@@ -160,7 +160,8 @@ function getUnicodeChar(code,base,encoding=0){
   if (typeof unicodeUsing[encoding]!=="function"){
     return "";
   }
-  return Uint8Array.from(unicodeUsing[encoding](code,base).map(val=>Number(CGRConvertDec.converter.convert(val,16,10)))).toString();
+  var uInt8Arr = Uint8Array.from(unicodeUsing[encoding](code,base).map(val=>Number(CGRConvertDec.converter.convert(val,16,10))));
+  return new TextDecoder().decode(uInt8Arr);
 }
 function getIfProtocolIsHTTPS(){
 return new URL(location.href).protocol==="https:";
