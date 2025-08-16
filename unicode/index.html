@@ -105,7 +105,7 @@ function getUTF16Hexadec(code,base){
 }
 function getUTF8Hexadec(code,base){
   var bin=CGRConvertDec.converter.convert(code,base,2).replace(/[^01]/g,"");
-  var arr=[],binToHexadecArr=[];
+  var arr=[],binToHexadecArr=[],lastLen=0;
   /* if (bin.length>31){
 
   } else if (bin.length>26){
@@ -139,12 +139,17 @@ function getUTF8Hexadec(code,base){
     bin="0".repeat(7-bin.length)+bin;
     arr=["0*******"];
   }
-  var lastLen=0;
+    console.log(bin);
+    console.log(arr);
   for (var i = 0;i<arr.length;i++){
-    var len = arr[i].replace(/[^\*]/g,'').length;
-    binToHexadecArr.push(bin.slice(lastLen,len));
-    lastLen=len;
+      var blanks=arr[i].replace(/[^\*]/g,'');
+    var len = blanks.length;
+      console.log(len);
+    binToHexadecArr.push(arr[i].replace(blanks, bin.slice(lastLen,lastLen+len)));
+      console.log(lastLen);
+    lastLen += len;
   }
+    console.log(binToHexadecArr);
   return binToHexadecArr.map(val=>CGRConvertDec.converter.convert(val,2,16));
 }
 var unicodeUsing={
