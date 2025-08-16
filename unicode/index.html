@@ -30,6 +30,7 @@ setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, i, 10));
 el.addEventListener("change", (ev)=>{ setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, i, 10)); var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10);  document.getElementById("preview").value=char; });
 myInputs.push(el);
 });
+break;
 }
 }
 setInputs();
