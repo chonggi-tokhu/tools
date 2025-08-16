@@ -26,15 +26,17 @@ function setInputs(){
 for (var i = 2;i <= 36;i++){
 var input_numbs_with_this_base = document.getEl_Attr("data-inputnumb-base", i.toString());
 Array.from(input_numbs_with_this_base).forEach((el,idx,par)=>{
-setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, 16, 10));
-el.addEventListener("change", (ev)=>{ setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, 16, 10)); var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10);  document.getElementById("preview").value=char; });
+setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, i, 10));
+el.addEventListener("change", (ev)=>{ setEl_Attr(el, "data-decval", CGRConvertDec.converter.convert(el.value, i, 10)); var char =  getUnicodeChar(myInput.getAttribute("data-decval"), 10);  document.getElementById("preview").value=char; });
 myInputs.push(el);
 });
 }
 }
+setInputs();
 var baseInput = document.getElementById("baseInput");
 baseInput.addEventListener("change",(ev)=>{
-  document.getElementById("codeinput").setAttribute("data-inputnumb-base",baseInput.value);
+  document.getElementById("codeinput").setAttribute("data-inputnumb-base", baseInput.value);
+  setInputs();
 });
 myInput = myInputs[0];
 function getUTF16CharFromCharCode(code, base){
