@@ -38,7 +38,9 @@
                         return;
                     }
                     this.systemstr=strp;
-                }
+                },
+                fromDec:fromDec,
+                toDec:toDec,
 
             };
             return {converter:converter};

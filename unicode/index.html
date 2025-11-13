@@ -102,11 +102,11 @@ function getStrLen(str,charsRule,{ruleMode}={ruleMode:0}){
   return rtv;
 }
 function getUTF16Hexadec(code,base){
-  var bin=CGRConvertDec.converter.convert(code,base,2).replace(/[^01]/g,"");
+  //var bin=CGRConvertDec.converter.convert(code,base,2).replace(/[^01]/g,"");
   //var binLen = getStrLen(bin,/[^01]/g,{ruleMode:0});
   //if (bin.length>0){}
   //귀찮음
-  return;
+  return String.fromCharCode(parseInt(CGRConvertDec.converter.convert(code,base,10)));
 }
 function getUTF8Hexadec(code,base){
   var bin=CGRConvertDec.converter.convert(code,base,2).replace(/[^01]/g,"");
