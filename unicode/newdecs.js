@@ -8,6 +8,7 @@
                 var value = 0;
                 for (var i = 0; i < code.length; i++) {
                     var chunk = code[i];
+                    console.log(chunk);
                     value = value * charMap.length + (charMap.indexOf(chunk) < 0 ? 0 : charMap.indexOf(chunk));
                 }
 
@@ -30,8 +31,8 @@
             }
             var converter = {
                 systemstr:'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                convert: function (codenumb = '', from, to, strp/*  = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' */) {
-                    return fromDec(toDec(codenumb, (strp || this.systemstr).slice(0, from).split('')), (strp||this.systemstr).slice(0, to).split(''));
+                convert: function (codenumb = '', from, to,{cap, strp/*  = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' */}={cap:true,strp:false}) {
+                    return fromDec(toDec(cap?codenumb.toUpperCase():codenumb, (strp || this.systemstr).slice(0, from).split('')), (strp||this.systemstr).slice(0, to).split(''));
                 },
                 change_systemstr:function(strp){
                     if (!(strp instanceof String ||typeof strp==='string')){
