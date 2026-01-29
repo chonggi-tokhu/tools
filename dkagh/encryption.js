@@ -73,8 +73,7 @@ function getUTF8Hexadec(code,base){
   return binToHexadecArr.map(val=>CGRConvertDec.converter.convert(val,2,16));
 }
 var unicodeUsing={
-  0:getUTF8Hexadec,
-  1:getUTF16Hexadec
+  0:getUTF8Hexadec
 }
 function getUnicodeChar(code,base,encoding=0){
   if (typeof unicodeUsing[encoding]!=="function"){
@@ -234,3 +233,4 @@ function getUnicodeChar(code,base,encoding=0){
     return modObjClass;
 
 })
+
