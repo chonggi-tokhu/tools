@@ -98,7 +98,7 @@ function getUnicodeChar(code,base,encoding=0){
                 value = value * Object.keys(codeMap).length + codeMap[chunk.slice(j, j + charsForOneUnicode)];
             }
 
-            result += getUnicodeChar(String.toString(value),10);
+            result += getUnicodeChar((value).toString(),10);
         }
 
         return result;
@@ -233,5 +233,6 @@ function getUnicodeChar(code,base,encoding=0){
     return modObjClass;
 
 })
+
 
 
