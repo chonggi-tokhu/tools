@@ -23,6 +23,66 @@ var charMap = [
 ];
 */
 
+function getUTF8Hexadec(code,base){
+  var bin=CGRConvertDec.converter.convert(code,base,2).replace(/[^01]/g,"");
+  var arr=[],binToHexadecArr=[],lastLen=0;
+  /* if (bin.length>31){
+
+  } else if (bin.length>26){
+
+  } else if (bin.length>21){
+    
+  } else if (bin.length>16){
+    
+  } else if (bin.length>11){
+    
+  } else if (bin.length>7){
+    
+  } */
+  if (code>2**31){
+  } else if (code>2**26){
+    bin="0".repeat(31-bin.length)+bin;
+    arr=["1111110*","10******","10******","10******","10******","10******"];
+  } else if (code>2**21){
+    bin="0".repeat(26-bin.length)+bin;
+    arr=["111110**","10******","10******","10******","10******"];
+  } else if (code>2**16){
+    bin="0".repeat(21-bin.length)+bin;
+    arr=["11110***","10******","10******","10******"];
+  } else if (code>2**11){
+    bin="0".repeat(16-bin.length)+bin;
+    arr=["1110****","10******","10******"];
+  } else if (code>2**7){
+    bin="0".repeat(11-bin.length)+bin;
+    arr=["110*****","10******"]
+  } else if (code>-1){
+    bin="0".repeat(7-bin.length)+bin;
+    arr=["0*******"];
+  }
+    console.log(bin);
+    console.log(arr);
+  for (var i = 0;i<arr.length;i++){
+      var blanks=arr[i].replace(/[^\*]/g,'');
+    var len = blanks.length;
+      console.log(len);
+    binToHexadecArr.push(arr[i].replace(blanks, bin.slice(lastLen,lastLen+len)));
+      console.log(lastLen);
+    lastLen += len;
+  }
+    console.log(binToHexadecArr);
+  return binToHexadecArr.map(val=>CGRConvertDec.converter.convert(val,2,16));
+}
+var unicodeUsing={
+  0:getUTF8Hexadec,
+  1:getUTF16Hexadec
+}
+function getUnicodeChar(code,base,encoding=0){
+  if (typeof unicodeUsing[encoding]!=="function"){
+    return "";
+  }
+  var uInt8Arr = Uint8Array.from(unicodeUsing[encoding](code,base).map(val=>Number(CGRConvertDec.converter.convert(val,16,10))));
+  return new TextDecoder().decode(uInt8Arr);
+}
     function decodeCode(code, codeMap, chunkSize, charsForOneUnicode) {
         if (typeof code !== 'string' || !(typeof codeMap === 'object' && codeMap !== null) || typeof chunkSize !== 'number' || isNaN(chunkSize)) {
             return 'ERROR: invalid parameter' | false;
@@ -39,7 +99,7 @@ var charMap = [
                 value = value * Object.keys(codeMap).length + codeMap[chunk.slice(j, j + charsForOneUnicode)];
             }
 
-            result += String.fromCharCode(value);
+            result += getUnicodeChar(value,10);
         }
 
         return result;
@@ -172,4 +232,5 @@ var charMap = [
     }
     //testingfunc();
     return modObjClass;
+
 })
